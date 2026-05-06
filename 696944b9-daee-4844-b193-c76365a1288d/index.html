@@ -61,14 +61,14 @@
         const fila = datos[0];
 
         // 1. Cambiamos el nombre
-        document.getElementById('nombre-cliente').innerText = fila.Nombre;
+        document.getElementById('nombre-cliente').innerText = fila.ID_NOMBRE;
 
         // 2. Cambiamos el mensaje
-        document.getElementById('mensaje-dedicatoria').innerText = fila.Mensaje;
+        document.getElementById('mensaje-dedicatoria').innerText = fila.MESAJE;
 
         // 3. Cambiamos la imagen (si pusiste el nombre del archivo o link en la columna Imagen)
         if(fila.Imagen) {
-            document.getElementById('foto-dinamica').src = fila.Imagen;
+            document.getElementById('foto-dinamica').src = fila.URL_FOTO;
         }
       }
     } catch (error) {

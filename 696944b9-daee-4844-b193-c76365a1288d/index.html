@@ -40,11 +40,46 @@
 <body>
     <div class="container">
         <div class="photo-frame">
-            <img src="https://picsum.photos/200" alt="Recuerdo">
+            <img id="foto-dinamica" src="https://picsum.photos/200" alt="Foto de regalo">
         </div>
-        <h1>Para: Yareli</h1>
-        <p>"Porque cada momento a tu lado es un regalo que el tiempo no puede borrar. Gracias por ser mi mejor aventura."</p>
+        <h1 id="nombre-cliente">Para: Yareli</h1>
+        <p id="mensaje-dedicatoria">"Porque cada momento a tu lado es un regalo que el tiempo no puede borrar. Gracias por ser mi mejor aventura."</p>
         <div class="footer">Escaneado desde tu Caja Premium Nuu</div>
     </div>
+
+    <script>
+  // La URL de tu API de SheetDB
+  const urlAPI = 'https://sheetdb.io/api/v1/mxfewnd0n8tmt';
+
+  async function cargarDatosDinamicos() {
+    try {
+      const respuesta = await fetch(urlAPI);
+      const datos = await respuesta.json();
+
+      // SheetDB devuelve un array. Tomamos la primera fila [0]
+      if (datos.length > 0) {
+        const fila = datos[0];
+
+        // 1. Cambiamos el nombre
+        document.getElementById('nombre-cliente').innerText = fila.Nombre;
+
+        // 2. Cambiamos el mensaje
+        document.getElementById('mensaje-dedicatoria').innerText = fila.Mensaje;
+
+        // 3. Cambiamos la imagen (si pusiste el nombre del archivo o link en la columna Imagen)
+        if(fila.Imagen) {
+            document.getElementById('foto-dinamica').src = fila.Imagen;
+        }
+      }
+    } catch (error) {
+      console.error('Error conectando con la base de datos:', error);
+      document.getElementById('mensaje-dedicatoria').innerText = 'No se pudo cargar el mensaje.';
+    }
+  }
+
+  // Ejecutamos la función al cargar la página
+  cargarDatosDinamicos();
+</script>
+    
 </body>
 </html>

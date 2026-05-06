@@ -40,7 +40,7 @@
 <body>
     <div class="container">
         <div class="photo-frame">
-            <img id="foto-dinamica" src="https://picsum.photos/200" alt="Foto de regalo">
+            <img id="foto-dinamica" src="" alt="Foto de regalo">
         </div>
         <h1 id="nombre-cliente">Para: Yareli</h1>
         <p id="mensaje-dedicatoria">"Porque cada momento a tu lado es un regalo que el tiempo no puede borrar. Gracias por ser mi mejor aventura."</p>
@@ -61,10 +61,10 @@
         const fila = datos[0];
 
         // 1. Cambiamos el nombre
-        document.getElementById('nombre-cliente').innerText = fila.ID_NOMBRE;
+        document.getElementById('nombre-cliente').innerText = fila.ID_CLIENTE;
 
         // 2. Cambiamos el mensaje
-        document.getElementById('mensaje-dedicatoria').innerText = fila.MESAJE;
+        document.getElementById('mensaje-dedicatoria').innerText = fila.MENSAJE;
 
         // 3. Cambiamos la imagen (si pusiste el nombre del archivo o link en la columna Imagen)
         if(fila.Imagen) {

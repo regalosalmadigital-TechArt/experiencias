@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Un Amigo en Mérida | Reservas Online</title>
+    <title>Un Amigo en Mérida | Reservas Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
         :root {
             --turquesa: #00C2CB;
@@ -56,10 +57,10 @@
             font-weight: bold;
         }
 
-        .tour-picker {
+        .tour-picker, .calendar-input {
             width: 100%;
             padding: 15px;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             border: 2px solid var(--turquesa);
             border-radius: 12px;
@@ -67,6 +68,8 @@
             color: var(--turquesa-dark);
             cursor: pointer;
             margin-bottom: 20px;
+            box-sizing: border-box;
+            font-family: inherit;
         }
 
         .tour-info-card {
@@ -76,22 +79,13 @@
             font-size: 14px;
             display: none;
             border: 1px solid #e0f2f2;
+            margin-bottom: 20px;
         }
 
         .tour-info-card.active { display: block; }
 
-        .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; font-size: 13px; font-weight: bold; color: #666; }
-        
-        input[type="date"] {
-            width: 100%; padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-family: inherit;
-        }
 
-        /* Estilos para los selectores de cantidad */
         .counter-container {
             display: flex;
             align-items: center;
@@ -103,28 +97,13 @@
             border: 1px solid #e0f2f2;
         }
         
-        .counter-label { font-weight: bold; font-size: 15px; }
-        
         .counter-controls { display: flex; align-items: center; gap: 15px; }
         
         .btn-qty {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            border: none;
-            background-color: var(--turquesa);
-            color: white;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.3s;
+            width: 35px; height: 35px; border-radius: 50%; border: none;
+            background-color: var(--turquesa); color: white; font-size: 20px;
+            font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center;
         }
-        
-        .btn-qty:hover { background-color: var(--turquesa-dark); }
-        .btn-qty:active { transform: scale(0.95); }
         
         .qty-val { font-size: 18px; font-weight: bold; min-width: 20px; text-align: center; }
 
@@ -151,18 +130,11 @@
             font-size: 18px;
             margin-top: 20px;
             box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-            transition: 0.3s;
         }
 
-        .btn-whatsapp:hover { background-color: #1ebd5e; }
-
         .footer-info {
-            text-align: center;
-            font-size: 12px;
-            color: #999;
-            margin-top: 40px;
-            border-top: 1px solid #eee;
-            padding-top: 20px;
+            text-align: center; font-size: 12px; color: #999;
+            margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px;
         }
     </style>
 </head>
@@ -181,29 +153,26 @@
     </select>
 
     <div id="info-cenotes" class="tour-info-card active">
-        <h3 class="section-title">Detalles del Tour Cenotes</h3>
-        <p>Visita 4 cenotes: Cerrado, Semiabierto, Abierto y tipo Río. Incluye bicicletas, chalecos y regaderas. Alimentos típicos a la carta (no incluye bebidas).</p>
+        <p>Visita 4 cenotes: Cerrado, Semiabierto, Abierto y tipo Río. Incluye bicicletas, chalecos y regaderas.</p>
     </div>
 
     <div id="info-chichen" class="tour-info-card">
-        <h3 class="section-title">Maravilla del Mundo</h3>
-        <p>Recorrido guiado por la zona arqueológica, tiempo libre en el Pueblo Mágico de Valladolid y visita a un cenote abierto para nadar. Incluye comida buffet regional.</p>
+        <p>Recorrido guiado, tiempo libre en Valladolid y visita a un cenote abierto. Incluye comida buffet regional.</p>
     </div>
 
     <div id="info-celestun" class="tour-info-card">
-        <h3 class="section-title">Naturaleza Viva</h3>
-        <p>Paseo en lancha por la ría para observar flamencos rosas, recorrido por túneles de manglar y tiempo de playa en Celestún. Almuerzo frente al mar incluido.</p>
+        <p>Paseo en lancha, avistamiento de flamencos y tiempo de playa. Almuerzo frente al mar incluido.</p>
     </div>
 
-    <h3 class="section-title">Cotiza tu grupo</h3>
+    <h3 class="section-title">Datos de tu Reserva</h3>
     
     <div class="form-group">
         <label>Fecha del Recorrido</label>
-        <input type="date" id="fecha" onchange="calcular()">
+        <input type="text" id="fecha-reserva" class="calendar-input" placeholder="Toca para elegir fecha...">
     </div>
 
     <div class="counter-container">
-        <span class="counter-label">Adultos</span>
+        <span style="font-weight: bold;">Adultos</span>
         <div class="counter-controls">
             <button class="btn-qty" onclick="cambiarCant('adultos', -1)">-</button>
             <span id="qty-adultos" class="qty-val">1</span>
@@ -212,7 +181,7 @@
     </div>
 
     <div class="counter-container">
-        <span class="counter-label">Niños (-12 años)</span>
+        <span style="font-weight: bold;">Niños (-12 años)</span>
         <div class="counter-controls">
             <button class="btn-qty" onclick="cambiarCant('ninos', -1)">-</button>
             <span id="qty-ninos" class="qty-val">0</span>
@@ -222,10 +191,10 @@
 
     <div class="summary-box">
         <div style="font-size: 14px; opacity: 0.9;">Total Estimado:</div>
-        <div class="total-price" id="total-display">$0 MXN</div>
+        <div class="total-price" id="total-display">$650 MXN</div>
     </div>
 
-    <a href="javascript:void(0)" id="wa-link" onclick="enviarWhatsApp()" class="btn-whatsapp">
+    <a href="javascript:void(0)" onclick="enviarWhatsApp()" class="btn-whatsapp">
         Reservar por WhatsApp
     </a>
 
@@ -234,33 +203,53 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+
 <script>
-    // Variables de estado
     let adultos = 1;
     let ninos = 0;
+    let fechaSeleccionada = "";
+
+    // CONFIGURACIÓN DE SHEETDB
+    // Reemplaza 'TU_API_ID' con el ID que te dio SheetDB
+    const API_URL = 'https://sheetdb.io/api/v1/TU_API_ID?sheet=bloqueos';
+
+    // Inicializar Calendario
+    const fp = flatpickr("#fecha-reserva", {
+        locale: "es",
+        minDate: "today",
+        dateFormat: "d/m/Y",
+        disable: [], // Se llenará con la API
+        onChange: function(selectedDates, dateStr) {
+            fechaSeleccionada = dateStr;
+        }
+    });
+
+    // Cargar bloqueos desde Google Sheets
+    fetch(API_URL)
+        .then(response => response.json())
+        .then(data => {
+            // Extraemos solo las fechas del array de objetos de la API
+            const bloqueos = data.map(row => row.fecha);
+            fp.set("disable", bloqueos);
+        })
+        .catch(error => console.error("Error cargando fechas:", error));
 
     function cambiarCant(tipo, cambio) {
         if (tipo === 'adultos') {
-            // Validación: Mínimo 1 adulto
-            if (adultos + cambio >= 1) {
-                adultos += cambio;
-                document.getElementById('qty-adultos').innerText = adultos;
-            }
+            if (adultos + cambio >= 1) adultos += cambio;
+            document.getElementById('qty-adultos').innerText = adultos;
         } else {
-            // Validación: Mínimo 0 niños
-            if (ninos + cambio >= 0) {
-                ninos += cambio;
-                document.getElementById('qty-ninos').innerText = ninos;
-            }
+            if (ninos + cambio >= 0) ninos += cambio;
+            document.getElementById('qty-ninos').innerText = ninos;
         }
         calcular();
     }
 
     function actualizarInterfaz() {
         const selectedTour = document.getElementById('tour-select').value;
-        document.querySelectorAll('.tour-info-card').forEach(card => {
-            card.classList.remove('active');
-        });
+        document.querySelectorAll('.tour-info-card').forEach(card => card.classList.remove('active'));
         document.getElementById('info-' + selectedTour).classList.add('active');
         calcular();
     }
@@ -268,42 +257,30 @@
     function calcular() {
         const select = document.getElementById('tour-select');
         const option = select.options[select.selectedIndex];
-        
-        const precioAdulto = parseInt(option.getAttribute('data-adulto'));
-        const precioNino = parseInt(option.getAttribute('data-nino'));
-        
-        const total = (adultos * precioAdulto) + (ninos * precioNino);
+        const total = (adultos * parseInt(option.getAttribute('data-adulto'))) + (ninos * parseInt(option.getAttribute('data-nino')));
         document.getElementById('total-display').innerText = `$${total.toLocaleString()} MXN`;
     }
 
     function enviarWhatsApp() {
-        const fecha = document.getElementById('fecha').value;
-        
-        // Validación de fecha
-        if (!fecha) {
-            alert("Por favor, selecciona la fecha de tu recorrido.");
-            document.getElementById('fecha').focus();
+        if (!fechaSeleccionada) {
+            alert("Por favor, selecciona una fecha disponible.");
             return;
         }
-
         const select = document.getElementById('tour-select');
         const tourName = select.options[select.selectedIndex].text;
         const total = document.getElementById('total-display').innerText;
-        const telefono = "525560040025"; 
-
+        
         let mensaje = `¡Hola! Me interesa reservar un tour con *Un Amigo en Mérida*:\n\n`;
         mensaje += `🌴 *Tour:* ${tourName}\n`;
-        mensaje += `📅 *Fecha:* ${fecha}\n`;
+        mensaje += `📅 *Fecha:* ${fechaSeleccionada}\n`;
         mensaje += `👥 *Adultos:* ${adultos}\n`;
         mensaje += `👶 *Niños:* ${ninos}\n`;
         mensaje += `💰 *Total estimado:* ${total}\n\n`;
         mensaje += `¿Tienen disponibilidad?`;
 
-        const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
-        window.open(url, '_blank');
+        window.open(`https://wa.me/525560040025?text=${encodeURIComponent(mensaje)}`, '_blank');
     }
 
-    // Inicializar cálculo
     window.onload = calcular;
 </script>
 

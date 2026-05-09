@@ -93,7 +93,6 @@ body .tour-picker {
 select::-ms-expand {
     display: none;
 }
-}
 
 /* Efecto Focus/Hover unificado */
 body .flatpickr-input:hover,

@@ -237,22 +237,30 @@
         📍 Mérida, Yucatán | 📞 5560040025 | 📧 rjnequiz@hotmail.com
     </div>
 </div>
-
 <script>
-    // 1. Variables Globales
+    // 1. Variables de estado global
     let adultos = 1;
     let ninos = 0;
-    let fp; 
+    let fp = null; 
     let fechaSeleccionada = "";
-    // Tu API de SheetDB (Verificada)
     const API_URL = 'https://sheetdb.io/api/v1/2s1p744rscfly?sheet=bloqueos';
 
-    // 2. Único punto de entrada: Esperamos a que el HTML esté listo
-    document.addEventListener("DOMContentLoaded", function() {
-        
-        // Inicializamos el calendario
+    // 2. Función maestra de inicialización
+    async function inicializarSistema() {
+        console.log("Iniciando secuencia de carga...");
+
+        // Esperar a que Flatpickr esté disponible en el objeto window
+        while (typeof flatpickr === 'undefined') {
+            console.log("Esperando a la librería Flatpickr...");
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+
+        // Una vez disponible, inicializamos el objeto
         try {
-            fp = flatpickr("#fecha-reserva", {
+            const campoFecha = document.getElementById('fecha-reserva');
+            if (!campoFecha) throw new Error("No se encontró el elemento #fecha-reserva en el HTML");
+
+            fp = flatpickr(campoFecha, {
                 locale: "es",
                 minDate: "today",
                 dateFormat: "Y-m-d",
@@ -261,56 +269,36 @@
                 disable: [], 
                 onChange: function(selectedDates, dateStr) {
                     fechaSeleccionada = dateStr;
-                    console.log("Fecha seleccionada:", fechaSeleccionada);
                 }
             });
-            console.log("✅ Calendario inicializado");
-        } catch (e) {
-            console.error("❌ Error al cargar Flatpickr. Revisa que los archivos .js estén antes de este código.", e);
+            console.log("✅ Objeto 'fp' creado exitosamente.");
+            
+            // Ejecutar procesos dependientes
+            calcular();
+            cargarBloqueos();
+
+        } catch (error) {
+            console.error("❌ Error en inicialización:", error.message);
         }
-
-        // Ejecutamos el cálculo inicial
-        calcular();
-
-        // Disparamos la búsqueda de bloqueos
-        cargarBloqueos();
-    });
+    }
 
     function cargarBloqueos() {
-        console.log("Consultando disponibilidad en SheetDB...");
-
         fetch(API_URL)
-            .then(res => {
-                if (!res.ok) throw new Error("Error de red: " + res.status);
-                return res.json();
-            })
+            .then(res => res.json())
             .then(data => {
-                // Filtramos filas vacías y limpiamos espacios
-                const fechasParaBloquear = data
+                const fechas = data
                     .filter(row => row.fecha && row.fecha.trim().length > 5)
                     .map(row => row.fecha.trim());
 
-                console.log("Fechas recibidas:", fechasParaBloquear);
-
-                // Verificamos la instancia con un pequeño retraso de seguridad
-                setTimeout(() => {
-                    if (fp && typeof fp.set === "function") {
-                        if (fechasParaBloquear.length > 0) {
-                            fp.set("disable", fechasParaBloquear);
-                            console.log("✅ Bloqueos aplicados correctamente.");
-                        } else {
-                            console.warn("⚠️ No se encontraron fechas para bloquear.");
-                        }
-                    } else {
-                        console.error("❌ 'fp' sigue sin ser reconocido. Reintenta asegurar el orden de los scripts.");
-                    }
-                }, 100);
+                if (fp && typeof fp.set === 'function') {
+                    fp.set("disable", fechas);
+                    console.log("✅ Fechas bloqueadas inyectadas:", fechas);
+                }
             })
-            .catch(err => {
-                console.error("❌ Error en la API:", err.message);
-            });
+            .catch(err => console.error("❌ Error API:", err));
     }
 
+    // Funciones de utilidad (Cálculo y Cantidades)
     function cambiarCant(tipo, cambio) {
         if (tipo === 'adultos') {
             if (adultos + cambio >= 1) adultos += cambio;
@@ -322,16 +310,9 @@
         calcular();
     }
 
-    function actualizarInterfaz() {
-        const selectedTour = document.getElementById('tour-select').value;
-        document.querySelectorAll('.tour-info-card').forEach(card => card.classList.remove('active'));
-        document.getElementById('info-' + selectedTour).classList.add('active');
-        calcular();
-    }
-
     function calcular() {
         const select = document.getElementById('tour-select');
-        if(!select) return; // Seguridad si el DOM no carga a tiempo
+        if(!select) return;
         const option = select.options[select.selectedIndex];
         const total = (adultos * parseInt(option.getAttribute('data-adulto'))) + (ninos * parseInt(option.getAttribute('data-nino')));
         document.getElementById('total-display').innerText = `$${total.toLocaleString()} MXN`;
@@ -356,6 +337,9 @@
 
         window.open(`https://wa.me/525560040025?text=${encodeURIComponent(mensaje)}`, '_blank');
     }
+
+    // Disparar la inicialización al cargar el DOM
+    document.addEventListener("DOMContentLoaded", inicializarSistema);
 </script>
 
 </body>

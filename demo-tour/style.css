@@ -55,7 +55,7 @@ body {
 }
 
 /* Agrupamos ambos selectores para que compartan la misma armonía */
-.tour-picker, #fecha-reserva, 
+#fecha-reserva, 
 .flatpickr-input {
     width: 100% !important;
     padding: 15px !important;

@@ -1,11 +1,11 @@
-// 1. Estado Global
+// 1. Variables de estado global
 let adultos = 1;
 let ninos = 0;
 let fp = null; 
 let fechaSeleccionada = "";
 const API_URL = 'https://sheetdb.io/api/v1/2s1p744rscfly?sheet=bloqueos';
 
-// 2. Inicialización
+// 2. Función maestra de inicialización
 async function inicializarSistema() {
     while (typeof flatpickr === 'undefined') {
         await new Promise(resolve => setTimeout(resolve, 100));
@@ -21,7 +21,7 @@ async function inicializarSistema() {
             dateFormat: "Y-m-d",
             altInput: true,
             altFormat: "d/m/Y",
-            disableMobile: true, // Crucial para estilos en celulares
+            disableMobile: "true", // Fuerza el uso del calendario de la librería en PC para mantener estilos
             disable: [], 
             onChange: function(selectedDates, dateStr) {
                 fechaSeleccionada = dateStr;
@@ -32,11 +32,11 @@ async function inicializarSistema() {
         cargarBloqueos();
 
     } catch (error) {
-        console.error("❌ Error:", error.message);
+        console.error("❌ Error en inicialización:", error.message);
     }
 }
 
-// 3. Bloqueos SheetDB
+// 3. Carga de bloqueos dinámicos desde Google Sheets
 function cargarBloqueos() {
     fetch(API_URL)
         .then(res => res.json())
@@ -49,10 +49,10 @@ function cargarBloqueos() {
                 fp.set("disable", fechas);
             }
         })
-        .catch(err => console.error("❌ API Error:", err));
+        .catch(err => console.error("❌ Error API:", err));
 }
 
-// 4. Lógica de Interfaz
+// 4. Funciones de Interfaz (Cantidades y Cálculo)
 function cambiarCant(tipo, cambio) {
     if (tipo === 'adultos') {
         if (adultos + cambio >= 1) adultos += cambio;
@@ -89,9 +89,15 @@ function enviarWhatsApp() {
     const total = document.getElementById('total-display').innerText;
     
     let mensaje = `¡Hola! Me interesa reservar un tour con *Un Amigo en Mérida*:\n\n`;
-    mensaje += `🌴 *Tour:* ${tourName}\n📅 *Fecha:* ${fechaSeleccionada}\n👥 *Adultos:* ${adultos} | *Niños:* ${ninos}\n💰 *Total:* ${total}\n\n¿Tienen disponibilidad?`;
+    mensaje += `🌴 *Tour:* ${tourName}\n`;
+    mensaje += `📅 *Fecha:* ${fechaSeleccionada}\n`;
+    mensaje += `👥 *Adultos:* ${adultos}\n`;
+    mensaje += `👶 *Niños:* ${ninos}\n`;
+    mensaje += `💰 *Total estimado:* ${total}\n\n`;
+    mensaje += `¿Tienen disponibilidad?`;
 
     window.open(`https://wa.me/525560040025?text=${encodeURIComponent(mensaje)}`, '_blank');
 }
 
+// Iniciar sistema al cargar el DOM
 document.addEventListener("DOMContentLoaded", inicializarSistema);

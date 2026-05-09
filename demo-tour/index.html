@@ -226,15 +226,21 @@
         }
     });
 
-    // Cargar bloqueos desde Google Sheets
-    fetch(API_URL)
-        .then(response => response.json())
-        .then(data => {
-            // Extraemos solo las fechas del array de objetos de la API
-            const bloqueos = data.map(row => row.FECHA);
-            fp.set("disable", bloqueos);
-        })
-        .catch(error => console.error("Error cargando fechas:", error));
+    // Cargar bloqueos desde Google Sheets (vía SheetDB)
+fetch(API_URL)
+    .then(response => response.json())
+    .then(data => {
+        // Limpiamos y extraemos las fechas de la columna 'fecha'
+        const bloqueos = data.map(row => row.fecha.trim()); 
+        
+        // Actualizamos el calendario con las nuevas fechas inhabilitadas
+        fp.set("disable", bloqueos);
+        
+        console.log("Fechas bloqueadas activas:", bloqueos);
+    })
+    .catch(error => {
+        console.error("Error al conectar con la disponibilidad:", error);
+    });
 
     function cambiarCant(tipo, cambio) {
         if (tipo === 'adultos') {

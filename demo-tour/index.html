@@ -18,7 +18,7 @@
         body { font-family: 'Urbanist', sans-serif; margin: 0; background-color: #f4f7f6; color: var(--text); }
 
         .hero {
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?auto=format&fit=crop&w=1200&q=80');
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1585647347483-22b66260dfff?auto=format&fit=crop&w=1200&q=80');
             background-size: cover; background-position: center;
             height: 30vh; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white;
         }
@@ -30,55 +30,74 @@
             padding: 30px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.1);
         }
 
-        .section-title { color: var(--turquesa-dark); font-size: 14px; text-transform: uppercase; font-weight: bold; margin: 20px 0 10px 0; display: block; }
+        .section-title { color: var(--turquesa-dark); font-size: 14px; text-transform: uppercase; font-weight: bold; margin: 20px 0 10px 0; display: block; border-left: 4px solid var(--turquesa); padding-left: 10px;}
 
-        /* Estilos del Calendario */
-        .calendar-input {
+        .calendar-input, .tour-picker {
             width: 100%; padding: 15px; border: 2px solid var(--turquesa);
             border-radius: 12px; font-size: 16px; box-sizing: border-box;
             background: var(--light-bg); cursor: pointer; font-family: inherit;
         }
 
-        .counter-group { display: flex; align-items: center; justify-content: space-between; background: var(--light-bg); padding: 12px; border-radius: 12px; margin-bottom: 10px; }
-        .btn-qty { width: 35px; height: 35px; border-radius: 50%; border: none; background: var(--turquesa); color: white; font-size: 20px; cursor: pointer; }
+        .counter-group { display: flex; align-items: center; justify-content: space-between; background: var(--light-bg); padding: 12px 20px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #e0f2f2; }
+        .counter-controls { display: flex; align-items: center; gap: 15px; }
+        .btn-qty { width: 35px; height: 35px; border-radius: 50%; border: none; background: var(--turquesa); color: white; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .qty-val { font-size: 18px; font-weight: bold; width: 20px; text-align: center; }
 
-        .summary-box { background: var(--turquesa-dark); color: white; padding: 20px; border-radius: 16px; text-align: center; margin-top: 20px; }
-        .btn-whatsapp { display: block; background: #25D366; color: white; text-align: center; padding: 18px; border-radius: 12px; text-decoration: none; font-weight: bold; margin-top: 15px; }
+        .summary-box { background: var(--turquesa-dark); color: white; padding: 20px; border-radius: 16px; text-align: center; margin-top: 25px; }
+        .total-price { font-size: 32px; font-weight: bold; display: block; }
+
+        .btn-whatsapp { display: block; background: #25D366; color: white; text-align: center; padding: 18px; border-radius: 12px; text-decoration: none; font-weight: bold; margin-top: 20px; font-size: 18px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); }
+        .warning { color: #ff4d4d; font-size: 13px; text-align: center; margin-top: 15px; font-weight: bold; display: none; }
     </style>
 </head>
 <body>
 
 <div class="hero">
     <h1>UN AMIGO EN MÉRIDA</h1>
-    <p style="font-weight: bold; color: var(--turquesa);">Reserva tu próxima aventura</p>
+    <p style="font-weight: bold; color: var(--turquesa);">Cenotes, Chichén y Aventuras</p>
 </div>
 
 <div class="container">
-    <span class="section-title">1. Elige tu Tour</span>
-    <select id="tour-select" class="calendar-input" style="margin-bottom: 15px;" onchange="calcular()">
-        <option value="cenotes" data-adulto="650" data-nino="450">Tour 4 Cenotes</option>
+    <span class="section-title">1. Selecciona tu Destino</span>
+    <select id="tour-select" class="tour-picker" onchange="calcular()">
+        <option value="cenotes" data-adulto="650" data-nino="450">Tour 4 Cenotes (Bici/Tren)</option>
         <option value="chichen" data-adulto="1200" data-nino="850">Chichén Itzá Premium</option>
-        <option value="celestun" data-adulto="950" data-nino="700">Celestún Aventura</option>
+        <option value="celestun" data-adulto="950" data-nino="700">Celestún Flamingo Safari</option>
     </select>
 
-    <span class="section-title">2. Selecciona Rango de Fechas</span>
+    <span class="section-title">2. Fecha del Tour (Rango)</span>
     <input type="text" id="rango-fechas" class="calendar-input" placeholder="Toca para elegir fechas...">
 
-    <span class="section-title">3. Personas</span>
+    <span class="section-title">3. ¿Quiénes viajan?</span>
+    
     <div class="counter-group">
-        <span>Adultos</span>
-        <div>
+        <span style="font-weight: bold;">Adultos</span>
+        <div class="counter-controls">
             <button class="btn-qty" onclick="cambiarCant('adultos', -1)">-</button>
-            <span id="qty-adultos" style="font-weight:bold; margin: 0 10px;">1</span>
+            <span id="qty-adultos" class="qty-val">1</span>
             <button class="btn-qty" onclick="cambiarCant('adultos', 1)">+</button>
         </div>
     </div>
 
-    <div class="summary-box">
-        <span id="total-display" style="font-size: 28px; font-weight: bold;">$650 MXN</span>
+    <div class="counter-group">
+        <span style="font-weight: bold;">Niños (-12 años)</span>
+        <div class="counter-controls">
+            <button class="btn-qty" onclick="cambiarCant('ninos', -1)">-</button>
+            <span id="qty-ninos" class="qty-val">0</span>
+            <button class="btn-qty" onclick="cambiarCant('ninos', 1)">+</button>
+        </div>
     </div>
 
-    <a href="javascript:void(0)" onclick="enviarWhatsApp()" class="btn-whatsapp">Confirmar Disponibilidad</a>
+    <div class="summary-box">
+        <span style="font-size: 14px; opacity: 0.9;">Inversión Total Estimada:</span>
+        <span class="total-price" id="total-display">$650 MXN</span>
+    </div>
+
+    <div id="error-msg" class="warning">⚠️ Por favor, selecciona una fecha válida</div>
+    
+    <a href="javascript:void(0)" onclick="intentarEnviar()" class="btn-whatsapp">
+        Reservar por WhatsApp
+    </a>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -87,58 +106,70 @@
 <script>
     let cantAdultos = 1;
     let cantNinos = 0;
-    let fechasSeleccionadas = "";
+    let fechasTexto = "";
 
-    // CONFIGURACIÓN DE BLOQUEO CON SHEETDB
-    // Reemplaza 'TU_API_URL' por tu enlace de SheetDB
-    const SHEETDB_URL = 'https://sheetdb.io/api/v1/TU_ID_AQUI?sheet=bloqueos';
-
+    // CONFIGURACIÓN DE FLATPICKR
     const calendario = flatpickr("#rango-fechas", {
         mode: "range",
         minDate: "today",
         locale: "es",
         dateFormat: "d-m-Y",
-        disable: [], // Aquí se cargarán las fechas de la API
         onClose: function(selectedDates) {
             if(selectedDates.length === 2) {
-                fechasSeleccionadas = `${selectedDates[0].toLocaleDateString()} al ${selectedDates[1].toLocaleDateString()}`;
-            } else {
-                fechasSeleccionadas = selectedDates[0]?.toLocaleDateString() || "";
+                fechasTexto = `${selectedDates[0].toLocaleDateString()} al ${selectedDates[1].toLocaleDateString()}`;
+            } else if (selectedDates.length === 1) {
+                fechasTexto = selectedDates[0].toLocaleDateString();
             }
+            if(fechasTexto) document.getElementById('error-msg').style.display = 'none';
         }
     });
 
-    // Cargar fechas bloqueadas desde Google Sheets
-    fetch(SHEETDB_URL)
-        .then(res => res.json())
-        .then(data => {
-            const bloqueos = data.map(item => item.fecha); // Asegúrate que tu columna se llame 'fecha'
-            calendario.set("disable", bloqueos);
-        })
-        .catch(err => console.log("Usando calendario sin bloqueos remotos"));
+    // CONEXIÓN OPCIONAL A SHEETDB (Descomentar y poner tu URL)
+    // fetch('TU_URL_SHEETDB').then(r => r.json()).then(d => calendario.set("disable", d.map(i => i.fecha)));
 
     function cambiarCant(tipo, cambio) {
-        if(tipo === 'adultos') cantAdultos = Math.max(1, cantAdultos + cambio);
-        document.getElementById('qty-adultos').innerText = cantAdultos;
+        if (tipo === 'adultos') {
+            cantAdultos = Math.max(1, cantAdultos + cambio);
+            document.getElementById('qty-adultos').innerText = cantAdultos;
+        } else {
+            cantNinos = Math.max(0, cantNinos + cambio);
+            document.getElementById('qty-ninos').innerText = cantNinos;
+        }
         calcular();
     }
 
     function calcular() {
         const select = document.getElementById('tour-select');
-        const pAdulto = parseInt(select.options[select.selectedIndex].getAttribute('data-adulto'));
-        const total = (cantAdultos * pAdulto);
+        const option = select.options[select.selectedIndex];
+        const pAdulto = parseInt(option.getAttribute('data-adulto'));
+        const pNino = parseInt(option.getAttribute('data-nino'));
+        
+        const total = (cantAdultos * pAdulto) + (cantNinos * pNino);
         document.getElementById('total-display').innerText = `$${total.toLocaleString()} MXN`;
     }
 
-    function enviarWhatsApp() {
-        if(!fechasSeleccionadas) {
-            alert("Por favor elige una fecha");
+    function intentarEnviar() {
+        if (!fechasTexto) {
+            document.getElementById('error-msg').style.display = 'block';
             return;
         }
-        const tour = document.getElementById('tour-select').options[document.getElementById('tour-select').selectedIndex].text;
-        const msg = `¡Hola! Quiero reservar con *Un Amigo en Mérida*:\n🌴 *Tour:* ${tour}\n📅 *Fechas:* ${fechasSeleccionadas}\n👥 *Adultos:* ${cantAdultos}\n💰 *Total:* ${document.getElementById('total-display').innerText}`;
-        window.open(`https://wa.me/525560040025?text=${encodeURIComponent(msg)}`, '_blank');
+
+        const select = document.getElementById('tour-select');
+        const tourName = select.options[select.selectedIndex].text;
+        const total = document.getElementById('total-display').innerText;
+
+        const telefono = "525560040025";
+        let mensaje = `¡Hola! Me interesa reservar con *Un Amigo en Mérida*:\n\n`;
+        mensaje += `🌴 *Tour:* ${tourName}\n`;
+        mensaje += `📅 *Fechas:* ${fechasTexto}\n`;
+        mensaje += `👥 *Adultos:* ${cantAdultos}\n`;
+        mensaje += `👶 *Niños:* ${cantNinos}\n`;
+        mensaje += `💰 *Total estimado:* ${total}\n\n`;
+        mensaje += `¿Me podrían confirmar disponibilidad?`;
+
+        window.open(`https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`, '_blank');
     }
 </script>
+
 </body>
 </html>

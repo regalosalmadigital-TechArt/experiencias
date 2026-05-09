@@ -189,48 +189,60 @@
 </div>
 
 <script>
-    function actualizarInterfaz() {
-        const selectedTour = document.getElementById('tour-select').value;
-        
-        // Ocultar todas las tarjetas de info
-        document.querySelectorAll('.tour-info-card').forEach(card => {
-            card.classList.remove('active');
-        });
-        
-        // Mostrar la correspondiente
-        document.getElementById('info-' + selectedTour).classList.add('active');
-        
+    let cantAdultos = 1;
+    let cantNinos = 0;
+
+    function cambiarCant(tipo, cambio) {
+        if (tipo === 'adultos') {
+            cantAdultos = Math.max(1, cantAdultos + cambio);
+            document.getElementById('qty-adultos').innerText = cantAdultos;
+        } else {
+            cantNinos = Math.max(0, cantNinos + cambio);
+            document.getElementById('qty-ninos').innerText = cantNinos;
+        }
         calcular();
+    }
+
+    function validarFecha() {
+        const fechaInput = document.getElementById('fecha');
+        if (fechaInput.value) {
+            fechaInput.classList.remove('error');
+            document.getElementById('error-msg').style.display = 'none';
+        }
     }
 
     function calcular() {
         const select = document.getElementById('tour-select');
         const option = select.options[select.selectedIndex];
+        const pAdulto = parseInt(option.getAttribute('data-adulto'));
+        const pNino = parseInt(option.getAttribute('data-nino'));
         
-        const precioAdulto = parseInt(option.getAttribute('data-adulto'));
-        const precioNino = parseInt(option.getAttribute('data-nino'));
-        
-        const adultos = document.getElementById('adultos').value;
-        const ninos = document.getElementById('ninos').value;
-        const fecha = document.getElementById('fecha').value;
-        
-        const total = (adultos * precioAdulto) + (ninos * precioNino);
+        const total = (cantAdultos * pAdulto) + (cantNinos * pNino);
         document.getElementById('total-display').innerText = `$${total.toLocaleString()} MXN`;
-
-        const telefono = "525560040025"; 
-        let mensaje = `¡Hola! Me interesa reservar un tour con *Un Amigo en Mérida*:\n\n`;
-        mensaje += `🌴 *Tour:* ${option.text}\n`;
-        mensaje += `📅 *Fecha:* ${fecha || 'Por confirmar'}\n`;
-        mensaje += `👥 *Adultos:* ${adultos}\n`;
-        mensaje += `👶 *Niños:* ${ninos}\n`;
-        mensaje += `💰 *Total estimado:* $${total.toLocaleString()} MXN\n\n`;
-        mensaje += `¿Tienen disponibilidad?`;
-
-        document.getElementById('wa-link').href = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
     }
 
-    // Iniciar con cálculo por defecto
-    calcular();
+    function intentarEnviar() {
+        const fecha = document.getElementById('fecha').value;
+        const select = document.getElementById('tour-select');
+        const tourName = select.options[select.selectedIndex].text;
+        const total = document.getElementById('total-display').innerText;
+
+        if (!fecha) {
+            document.getElementById('fecha').classList.add('error');
+            document.getElementById('error-msg').style.display = 'block';
+            return;
+        }
+
+        const telefono = "525560040025";
+        let mensaje = `¡Hola! Quiero reservar con Un Amigo en Mérida:\n\n`;
+        mensaje += `🌴 Tour: ${tourName}\n`;
+        mensaje += `📅 Fecha: ${fecha}\n`;
+        mensaje += `👥 Adultos: ${cantAdultos}\n`;
+        mensaje += `👶 Niños: ${cantNinos}\n`;
+        mensaje += `💰 Total estimado: ${total}`;
+
+        window.open(`https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`, '_blank');
+    }
 </script>
 
 </body>

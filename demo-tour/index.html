@@ -213,7 +213,7 @@
 
     // CONFIGURACIÓN DE SHEETDB
     // Reemplaza 'TU_API_ID' con el ID que te dio SheetDB
-    const API_URL = 'https://sheetdb.io/api/v1/TU_API_ID?sheet=bloqueos';
+    const API_URL = 'https://sheetdb.io/api/v1/rokzepnorycc8';
 
     // Inicializar Calendario
     const fp = flatpickr("#fecha-reserva", {
@@ -231,7 +231,7 @@
         .then(response => response.json())
         .then(data => {
             // Extraemos solo las fechas del array de objetos de la API
-            const bloqueos = data.map(row => row.fecha);
+            const bloqueos = data.map(row => row.FECHA);
             fp.set("disable", bloqueos);
         })
         .catch(error => console.error("Error cargando fechas:", error));

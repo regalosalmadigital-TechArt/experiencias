@@ -70,7 +70,7 @@ body .tour-picker {
     color: var(--turquesa-dark) !important;
     box-sizing: border-box !important;
     cursor: pointer !important;
-    appearance: none !important; /* Quita estilos nativos de Windows/Mac */
+   /* appearance: none !important;  Quita estilos nativos de Windows/Mac */
     -webkit-appearance: none;
     transition: all 0.3s ease !important;
     display: block !important;

@@ -163,23 +163,33 @@
         <input type="date" id="fecha" onchange="calcular()">
     </div>
 
-    <div class="grid-form">
-        <div class="form-group">
-            <label>Adultos</label>
-            <input type="number" id="adultos" value="1" min="1" onchange="calcular()">
+    <div class="counter-group">
+        <span style="font-weight: bold;">Adultos</span>
+        <div class="counter-controls">
+            <button class="btn-qty" onclick="cambiarCant('adultos', -1)">-</button>
+            <span id="qty-adultos" class="qty-val">1</span>
+            <button class="btn-qty" onclick="cambiarCant('adultos', 1)">+</button>
         </div>
-        <div class="form-group">
-            <label>Niños (-12 años)</label>
-            <input type="number" id="ninos" value="0" min="0" onchange="calcular()">
+    </div>
+
+    <div class="counter-group">
+        <span style="font-weight: bold;">Niños (-12 años)</span>
+        <div class="counter-controls">
+            <button class="btn-qty" onclick="cambiarCant('ninos', -1)">-</button>
+            <span id="qty-ninos" class="qty-val">0</span>
+            <button class="btn-qty" onclick="cambiarCant('ninos', 1)">+</button>
         </div>
     </div>
 
     <div class="summary-box">
-        <div style="font-size: 14px; opacity: 0.9;">Total Estimado:</div>
-        <div class="total-price" id="total-display">$0 MXN</div>
+        <span style="font-size: 14px; opacity: 0.9;">Inversión Total Estimada:</span>
+        <span class="total-price" id="total-display">$650 MXN</span>
+        <div style="font-size: 11px; margin-top: 5px;">¡Visita un paraíso cada día!</div>
     </div>
 
-    <a href="#" id="wa-link" class="btn-whatsapp">
+    <div id="error-msg" class="warning">⚠️ Por favor, selecciona la fecha de tu tour</div>
+    
+    <a href="javascript:void(0)" onclick="intentarEnviar()" class="btn-whatsapp">
         Reservar por WhatsApp
     </a>
 

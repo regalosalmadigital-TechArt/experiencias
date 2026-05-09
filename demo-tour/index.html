@@ -181,6 +181,41 @@
             border-top: 1px solid #eee;
             padding-top: 20px;
         }
+
+        /* Asegura que el estilo se mantenga en PC y móviles */
+.flatpickr-input, #fecha-reserva {
+    width: 100% !important;
+    padding: 12px !important;
+    font-size: 16px !important;
+    border: 1px solid #ddd !important;
+    border-radius: 8px !important;
+    box-sizing: border-box !important;
+    background-color: #fff !important;
+    color: var(--text) !important;
+    cursor: pointer !important;
+    display: block !important;
+}
+
+/* Estilos para los días BLOQUEADOS en el calendario */
+.flatpickr-day.flatpickr-disabled, 
+.flatpickr-day.flatpickr-disabled:hover {
+    background: #eeeeee !important;
+    color: #bbbbbb !important;
+    border-color: transparent !important;
+    cursor: not-allowed !important;
+    text-decoration: line-through; /* Opcional: añade una línea para mayor claridad */
+}
+
+/* Color del día actual para que no se confunda con el seleccionado */
+.flatpickr-day.today {
+    border-color: var(--turquesa) !important;
+}
+
+/* Color del día seleccionado */
+.flatpickr-day.selected {
+    background: var(--turquesa) !important;
+    border-color: var(--turquesa) !important;
+}
     </style>
 </head>
 <body>
@@ -288,19 +323,21 @@
     }
 
     function cargarBloqueos() {
-        fetch(API_URL)
-            .then(res => res.json())
-            .then(data => {
-                const fechas = data
-                    .filter(row => row.fecha && row.fecha.trim().length > 5)
-                    .map(row => row.fecha.trim());
+    fetch(API_URL)
+        .then(res => res.json())
+        .then(data => {
+            const fechas = data
+                .filter(row => row.fecha && row.fecha.trim().length > 5)
+                .map(row => row.fecha.trim());
 
-                if (fp && typeof fp.set === 'function') {
-                    fp.set("disable", fechas);
-                }
-            })
-            .catch(err => console.error("❌ Error API:", err));
-    }
+            if (fp && typeof fp.set === 'function') {
+                // Inyectamos las fechas y forzamos un redibujado del calendario
+                fp.set("disable", fechas);
+                console.log("✅ Fechas bloqueadas aplicadas:", fechas);
+            }
+        })
+        .catch(err => console.error("❌ Error API:", err));
+}
 
     function cambiarCant(tipo, cambio) {
         if (tipo === 'adultos') {

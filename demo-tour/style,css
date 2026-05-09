@@ -1,0 +1,133 @@
+/* VARIABLES GLOBALES: Cambia estos valores para cambiar el diseño de toda la web */
+:root {
+    --turquesa: #00C2CB;        /* Color principal */
+    --turquesa-dark: #008B94;   /* Hover y títulos */
+    --white: #ffffff;
+    --text: #333333;
+    --light-bg: #f0fafa;        /* Fondos de tarjetas */
+}
+
+/* RESET Y CUERPO */
+body {
+    font-family: 'Urbanist', sans-serif;
+    margin: 0; padding: 0;
+    background-color: #f4f7f6;
+    color: var(--text);
+    line-height: 1.5;
+}
+
+/* ENCABEZADO (HERO) */
+.hero {
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                url('https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?auto=format&fit=crop&w=1200&q=80');
+    background-size: cover;
+    background-position: center;
+    height: 30vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+}
+
+.hero h1 { font-size: 32px; margin: 0; text-transform: uppercase; letter-spacing: 3px; }
+
+/* CONTENEDOR PRINCIPAL: La tarjeta blanca */
+.container {
+    max-width: 650px;
+    margin: -30px auto 50px;
+    background: var(--white);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+/* TÍTULOS DE SECCIÓN: La barrita turquesa a la izquierda */
+.section-title {
+    color: var(--turquesa-dark);
+    font-size: 16px;
+    border-left: 4px solid var(--turquesa);
+    padding-left: 10px;
+    margin: 25px 0 15px 0;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+/* ELEMENTOS DE FORMULARIO: Selects e Inputs */
+.tour-picker, #fecha-reserva, .flatpickr-input {
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    border: 2px solid var(--turquesa);
+    border-radius: 12px;
+    background: var(--light-bg);
+    color: var(--turquesa-dark);
+    cursor: pointer;
+    margin-bottom: 20px;
+    box-sizing: border-box; /* Evita que el padding ensanche el input */
+}
+
+/* TARJETAS DE INFO */
+.tour-info-card {
+    background: var(--light-bg);
+    padding: 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    display: none;
+    border: 1px solid #e0f2f2;
+}
+.tour-info-card.active { display: block; }
+
+/* CONTROLES DE CANTIDAD (ADULTOS/NIÑOS) */
+.counter-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--light-bg);
+    padding: 10px 20px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #e0f2f2;
+}
+
+.btn-qty {
+    width: 35px; height: 35px;
+    border-radius: 50%; border: none;
+    background-color: var(--turquesa);
+    color: white; font-size: 20px; font-weight: bold;
+    cursor: pointer; transition: background 0.3s;
+}
+.btn-qty:hover { background-color: var(--turquesa-dark); }
+
+/* RESUMEN DE PRECIO */
+.summary-box {
+    background-color: var(--turquesa);
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    margin-top: 25px;
+}
+.total-price { font-size: 36px; font-weight: bold; }
+
+/* BOTÓN WHATSAPP */
+.btn-whatsapp {
+    display: block;
+    background-color: #25D366;
+    color: white;
+    text-align: center;
+    padding: 18px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 20px;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+}
+
+.footer-info {
+    text-align: center; font-size: 12px; color: #999;
+    margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px;
+}

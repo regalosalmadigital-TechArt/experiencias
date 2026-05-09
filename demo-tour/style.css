@@ -54,9 +54,11 @@ body {
     font-weight: bold;
 }
 
-/* Agrupamos ambos selectores para que compartan la misma armonía */
-#fecha-reserva, 
-.flatpickr-input {
+/* SOLUCIÓN AL PROBLEMA DE PC: Selector de triple peso */
+/* Al poner 'body' antes, le ganamos a los estilos internos de Flatpickr */
+body .flatpickr-input,
+body #fecha-reserva,
+body .tour-picker {
     width: 100% !important;
     padding: 15px !important;
     font-size: 18px !important;
@@ -68,15 +70,24 @@ body {
     color: var(--turquesa-dark) !important;
     box-sizing: border-box !important;
     cursor: pointer !important;
+    appearance: none !important; /* Quita estilos nativos de Windows/Mac */
+    -webkit-appearance: none;
     transition: all 0.3s ease !important;
+    display: block !important;
 }
 
-/* También agrupamos el estado de enfoque (focus) */
-#fecha-reserva:focus, 
-.flatpickr-input:focus {
+/* Efecto Focus/Hover unificado */
+body .flatpickr-input:hover,
+body .flatpickr-input:focus,
+body .tour-picker:hover {
     border-color: var(--turquesa-dark) !important;
     background-color: #ffffff !important;
     outline: none !important;
+}
+
+/* Forzar que el calendario no use el estilo nativo de móvil de Apple/Android */
+.flatpickr-mobile {
+    display: none !important;
 }
 
 /* TARJETAS DE INFO */

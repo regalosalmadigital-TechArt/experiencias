@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Un Amigo en Mérida | Reservas Online</title>
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
         :root {
             --turquesa: #00C2CB;
@@ -233,7 +234,7 @@
         📍 Mérida, Yucatán | 📞 5560040025 | 📧 rjnequiz@hotmail.com
     </div>
 </div>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
@@ -241,53 +242,7 @@
 <script>
     let adultos = 1;
     let ninos = 0;
-    let fechaSeleccionada = "";
-
-    document.addEventListener("DOMContentLoaded", function() {
-    
-    // 1. Definimos la URL de tu API de SheetDB
-    // Asegúrate de que el nombre de la hoja sea 'bloqueos' y la columna 'fecha'
-    const API_URL = 'https://sheetdb.io/api/v1/2s1p744rscfly?sheet=bloqueos';
-
-    // 2. Inicializamos Flatpickr y guardamos la instancia en 'fp'
-    const fp = flatpickr("#fecha-reserva", {
-        locale: "es",
-        minDate: "today",
-        dateFormat: "Y-m-d", // Formato interno para la API (ISO)
-        altInput: true,      // Formato visual para el usuario
-        altFormat: "d/m/Y",
-        disable: [],         // Iniciamos sin bloqueos
-        onChange: function(selectedDates, dateStr) {
-            fechaSeleccionada = dateStr;
-            console.log("Fecha elegida:", fechaSeleccionada);
-        }
-    });
-
-    // 3. Consultamos la API de SheetDB
-    fetch(API_URL)
-        .then(res => {
-            if (!res.ok) throw new Error("Error en la respuesta de la red");
-            return res.json();
-        })
-        .then(data => {
-            // Filtramos filas vacías y limpiamos espacios
-            const fechasParaBloquear = data
-                .filter(row => row.fecha && row.fecha.trim() !== "")
-                .map(row => row.fecha.trim());
-
-            console.log("Intentando bloquear estas fechas:", fechasParaBloquear);
-
-            // Verificamos que 'fp' exista antes de llamar a .set()
-            if (fp && fechasParaBloquear.length > 0) {
-                fp.set("disable", fechasParaBloquear);
-                console.log("✅ Calendario actualizado con éxito");
-            }
-        })
-        .catch(err => {
-            console.error("❌ Error al cargar bloqueos:", err);
-            // El calendario seguirá funcionando pero sin bloqueos remotos
-        });
-});
+   
 
     function cambiarCant(tipo, cambio) {
         if (tipo === 'adultos') {

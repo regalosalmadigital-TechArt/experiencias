@@ -29,6 +29,13 @@ async function inicializarSistema() {
             dateFormat: "Y-m-d",
             altInput: true, // Muestra un formato más legible al usuario
             altFormat: "d/m/Y",
+
+            // CLAVE PARA PC: Obliga a heredar los estilos del input original
+            altInputClass: "flatpickr-input",
+
+            // Evita que el celular use su calendario nativo feo
+            disableMobile: true,
+            
             disable: [], // Aquí se cargarán las fechas de Google Sheets
             onChange: function(selectedDates, dateStr) {
                 fechaSeleccionada = dateStr;

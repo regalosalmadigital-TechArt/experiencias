@@ -240,65 +240,77 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
 
 <script>
+    // 1. Variables Globales
     let adultos = 1;
     let ninos = 0;
     let fp; 
-let fechaSeleccionada = "";
-const API_URL = 'https://sheetdb.io/api/v1/2s1p744rscfly?sheet=bloqueos';
+    let fechaSeleccionada = "";
+    // Tu API de SheetDB (Verificada)
+    const API_URL = 'https://sheetdb.io/api/v1/2s1p744rscfly?sheet=bloqueos';
 
-document.addEventListener("DOMContentLoaded", function() {
-    
-    // 2. Inicializamos el calendario PRIMERO
-    fp = flatpickr("#fecha-reserva", {
-        locale: "es",
-        minDate: "today",
-        dateFormat: "Y-m-d",
-        altInput: true,
-        altFormat: "d/m/Y",
-        disable: [], // Inicia vacío
-        onChange: function(selectedDates, dateStr) {
-            fechaSeleccionada = dateStr;
-            console.log("Fecha seleccionada:", fechaSeleccionada);
+    // 2. Único punto de entrada: Esperamos a que el HTML esté listo
+    document.addEventListener("DOMContentLoaded", function() {
+        
+        // Inicializamos el calendario
+        try {
+            fp = flatpickr("#fecha-reserva", {
+                locale: "es",
+                minDate: "today",
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "d/m/Y",
+                disable: [], 
+                onChange: function(selectedDates, dateStr) {
+                    fechaSeleccionada = dateStr;
+                    console.log("Fecha seleccionada:", fechaSeleccionada);
+                }
+            });
+            console.log("✅ Calendario inicializado");
+        } catch (e) {
+            console.error("❌ Error al cargar Flatpickr. Revisa que los archivos .js estén antes de este código.", e);
         }
+
+        // Ejecutamos el cálculo inicial
+        calcular();
+
+        // Disparamos la búsqueda de bloqueos
+        cargarBloqueos();
     });
 
-    // 3. Una vez creado el calendario, disparamos la búsqueda de bloqueos
-    cargarBloqueos();
-});
+    function cargarBloqueos() {
+        console.log("Consultando disponibilidad en SheetDB...");
 
-function cargarBloqueos() {
-    console.log("Consultando disponibilidad en SheetDB...");
+        fetch(API_URL)
+            .then(res => {
+                if (!res.ok) throw new Error("Error de red: " + res.status);
+                return res.json();
+            })
+            .then(data => {
+                // Filtramos filas vacías y limpiamos espacios
+                const fechasParaBloquear = data
+                    .filter(row => row.fecha && row.fecha.trim().length > 5)
+                    .map(row => row.fecha.trim());
 
-    fetch(API_URL)
-        .then(res => {
-            if (!res.ok) throw new Error("Error de red: " + res.status);
-            return res.json();
-        })
-        .then(data => {
-            // Filtramos y limpiamos las fechas del Excel
-            const fechasParaBloquear = data
-                .filter(row => row.fecha && row.fecha.trim().length > 5)
-                .map(row => row.fecha.trim());
+                console.log("Fechas recibidas:", fechasParaBloquear);
 
-            console.log("Fechas crudas del Excel:", fechasParaBloquear);
-
-            // Verificamos si la instancia del calendario (fp) está lista
-            if (fp && typeof fp.set === "function") {
-                if (fechasParaBloquear.length > 0) {
-                    fp.set("disable", fechasParaBloquear);
-                    console.log("✅ ¡Éxito! Calendario actualizado con bloqueos.");
-                } else {
-                    console.warn("⚠️ No hay fechas escritas en el Excel.");
-                }
-            } else {
-                console.error("❌ El objeto 'fp' no es una instancia válida de Flatpickr.");
-            }
-        })
-        .catch(err => {
-            console.error("❌ Error en el proceso de carga:", err.message);
-        });
-}
-   
+                // Verificamos la instancia con un pequeño retraso de seguridad
+                setTimeout(() => {
+                    if (fp && typeof fp.set === "function") {
+                        if (fechasParaBloquear.length > 0) {
+                            fp.set("disable", fechasParaBloquear);
+                            console.log("✅ Bloqueos aplicados correctamente.");
+                        } else {
+                            console.warn("⚠️ No se encontraron fechas para bloquear.");
+                        }
+                    } else {
+                        console.error("❌ 'fp' sigue sin ser reconocido. Reintenta asegurar el orden de los scripts.");
+                    }
+                }, 100);
+            })
+            .catch(err => {
+                console.error("❌ Error en la API:", err.message);
+            });
+    }
 
     function cambiarCant(tipo, cambio) {
         if (tipo === 'adultos') {
@@ -320,6 +332,7 @@ function cargarBloqueos() {
 
     function calcular() {
         const select = document.getElementById('tour-select');
+        if(!select) return; // Seguridad si el DOM no carga a tiempo
         const option = select.options[select.selectedIndex];
         const total = (adultos * parseInt(option.getAttribute('data-adulto'))) + (ninos * parseInt(option.getAttribute('data-nino')));
         document.getElementById('total-display').innerText = `$${total.toLocaleString()} MXN`;
@@ -344,8 +357,6 @@ function cargarBloqueos() {
 
         window.open(`https://wa.me/525560040025?text=${encodeURIComponent(mensaje)}`, '_blank');
     }
-
-    window.onload = calcular;
 </script>
 
 </body>

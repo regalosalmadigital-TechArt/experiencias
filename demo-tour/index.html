@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
     <style>
         :root {
             --turquesa: #00C2CB;
@@ -73,6 +73,28 @@
             margin-bottom: 20px;
         }
 
+        /* ESTILOS RECUPERADOS PARA EL INPUT DE FECHA */
+        #fecha-reserva, .flatpickr-input {
+            width: 100%; 
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-family: inherit;
+            background-color: #fff;
+            color: var(--text);
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        /* Efecto al seleccionar el input */
+        #fecha-reserva:focus, .flatpickr-input:focus {
+            border-color: var(--turquesa);
+            outline: none;
+            background-color: var(--light-bg);
+        }
+
         .tour-info-card {
             background: var(--light-bg);
             padding: 20px;
@@ -86,16 +108,7 @@
 
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; font-size: 13px; font-weight: bold; color: #666; }
-        
-        input[type="text"] {
-            width: 100%; padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-family: inherit;
-        }
 
-        /* Estilos para los selectores de cantidad */
         .counter-container {
             display: flex;
             align-items: center;
@@ -203,7 +216,7 @@
     
     <div class="form-group">
         <label>Fecha del Recorrido</label>
-        <input type="text" id="fecha-reserva" onchange="calcular()">
+        <input type="text" id="fecha-reserva" placeholder="Selecciona una fecha...">
     </div>
 
     <div class="counter-container">
@@ -237,28 +250,22 @@
         📍 Mérida, Yucatán | 📞 5560040025 | 📧 rjnequiz@hotmail.com
     </div>
 </div>
+
 <script>
-    // 1. Variables de estado global
     let adultos = 1;
     let ninos = 0;
     let fp = null; 
     let fechaSeleccionada = "";
     const API_URL = 'https://sheetdb.io/api/v1/2s1p744rscfly?sheet=bloqueos';
 
-    // 2. Función maestra de inicialización
     async function inicializarSistema() {
-        console.log("Iniciando secuencia de carga...");
-
-        // Esperar a que Flatpickr esté disponible en el objeto window
         while (typeof flatpickr === 'undefined') {
-            console.log("Esperando a la librería Flatpickr...");
             await new Promise(resolve => setTimeout(resolve, 100));
         }
 
-        // Una vez disponible, inicializamos el objeto
         try {
             const campoFecha = document.getElementById('fecha-reserva');
-            if (!campoFecha) throw new Error("No se encontró el elemento #fecha-reserva en el HTML");
+            if (!campoFecha) throw new Error("No se encontró el elemento #fecha-reserva");
 
             fp = flatpickr(campoFecha, {
                 locale: "es",
@@ -271,9 +278,7 @@
                     fechaSeleccionada = dateStr;
                 }
             });
-            console.log("✅ Objeto 'fp' creado exitosamente.");
             
-            // Ejecutar procesos dependientes
             calcular();
             cargarBloqueos();
 
@@ -292,13 +297,11 @@
 
                 if (fp && typeof fp.set === 'function') {
                     fp.set("disable", fechas);
-                    console.log("✅ Fechas bloqueadas inyectadas:", fechas);
                 }
             })
             .catch(err => console.error("❌ Error API:", err));
     }
 
-    // Funciones de utilidad (Cálculo y Cantidades)
     function cambiarCant(tipo, cambio) {
         if (tipo === 'adultos') {
             if (adultos + cambio >= 1) adultos += cambio;
@@ -307,6 +310,13 @@
             if (ninos + cambio >= 0) ninos += cambio;
             document.getElementById('qty-ninos').innerText = ninos;
         }
+        calcular();
+    }
+
+    function actualizarInterfaz() {
+        const selectedTour = document.getElementById('tour-select').value;
+        document.querySelectorAll('.tour-info-card').forEach(card => card.classList.remove('active'));
+        document.getElementById('info-' + selectedTour).classList.add('active');
         calcular();
     }
 
@@ -338,7 +348,6 @@
         window.open(`https://wa.me/525560040025?text=${encodeURIComponent(mensaje)}`, '_blank');
     }
 
-    // Disparar la inicialización al cargar el DOM
     document.addEventListener("DOMContentLoaded", inicializarSistema);
 </script>
 

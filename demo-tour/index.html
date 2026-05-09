@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Un Amigo en Mérida | Reservas Pro</title>
+    <title>Un Amigo en Mérida | Tour Cenotes</title>
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -14,50 +14,82 @@
             --light-bg: #f0fafa;
         }
 
-        body { font-family: 'Urbanist', sans-serif; margin: 0; padding: 0; background-color: #f4f7f6; color: var(--text); }
+        body { font-family: 'Urbanist', sans-serif; margin: 0; padding: 0; background-color: #f4f7f6; color: var(--text); line-height: 1.5; }
 
-        .container { max-width: 550px; margin: 40px auto; background: var(--white); padding: 30px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); border: 1px solid #eee; }
+        /* Hero Section con Branding */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1585647347483-22b66260dfff?auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 35vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        .hero h1 { font-size: 38px; margin: 0; text-transform: uppercase; letter-spacing: 3px; }
+        .hero p { font-size: 18px; font-weight: bold; margin-top: 10px; color: var(--turquesa); }
+
+        .container {
+            max-width: 550px;
+            margin: -40px auto 50px;
+            background: var(--white);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border: 1px solid #eee;
+        }
         
-        .section-title { color: var(--turquesa-dark); font-size: 14px; text-transform: uppercase; font-weight: bold; margin-bottom: 15px; display: block; }
+        .section-title { color: var(--turquesa-dark); font-size: 14px; text-transform: uppercase; font-weight: bold; margin: 25px 0 15px 0; display: block; border-left: 4px solid var(--turquesa); padding-left: 10px; }
 
         /* Selector de Tour */
-        .tour-picker { width: 100%; padding: 15px; font-size: 16px; border: 2px solid var(--turquesa); border-radius: 12px; margin-bottom: 25px; }
+        .tour-picker { width: 100%; padding: 15px; font-size: 16px; border: 2px solid var(--turquesa); border-radius: 12px; margin-bottom: 10px; font-family: inherit; font-weight: bold; color: var(--turquesa-dark); }
 
         /* Controles de Personas (Botones +/-) */
-        .counter-group { display: flex; align-items: center; justify-content: space-between; background: var(--light-bg); padding: 15px; border-radius: 12px; margin-bottom: 15px; }
+        .counter-group { display: flex; align-items: center; justify-content: space-between; background: var(--light-bg); padding: 12px 20px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #e0f2f2; }
         .counter-controls { display: flex; align-items: center; gap: 15px; }
-        .btn-qty { width: 35px; height: 35px; border-radius: 50%; border: none; background: var(--turquesa); color: white; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .btn-qty:disabled { background: #ccc; }
+        .btn-qty { width: 35px; height: 35px; border-radius: 50%; border: none; background: var(--turquesa); color: white; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .btn-qty:active { background: var(--turquesa-dark); }
         .qty-val { font-size: 18px; font-weight: bold; width: 20px; text-align: center; }
 
-        /* Input de Fecha con validación visual */
-        input[type="date"] { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; margin-bottom: 25px; }
+        /* Input de Fecha */
+        input[type="date"] { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-family: inherit; }
         input[type="date"].error { border-color: #ff4d4d; background-color: #fff5f5; }
 
-        .summary-box { background: var(--turquesa-dark); color: white; padding: 20px; border-radius: 16px; text-align: center; }
+        .summary-box { background: var(--turquesa-dark); color: white; padding: 20px; border-radius: 16px; text-align: center; margin-top: 25px; }
         .total-price { font-size: 32px; font-weight: bold; display: block; }
 
-        .btn-whatsapp { display: block; background: #25D366; color: white; text-align: center; padding: 18px; border-radius: 12px; text-decoration: none; font-weight: bold; margin-top: 20px; }
-        .warning { color: #ff4d4d; font-size: 12px; text-align: center; margin-top: 10px; display: none; }
+        .btn-whatsapp { display: block; background: #25D366; color: white; text-align: center; padding: 18px; border-radius: 12px; text-decoration: none; font-weight: bold; margin-top: 20px; font-size: 18px; box-shadow: 0 4px 15px rgba(37,211,102,0.3); }
+        .warning { color: #ff4d4d; font-size: 13px; text-align: center; margin-top: 15px; font-weight: bold; display: none; }
+
+        .footer-info { text-align: center; font-size: 12px; color: #999; margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px; }
     </style>
 </head>
 <body>
 
+<div class="hero">
+    <h1>TOUR CENOTES</h1>
+    <p>UN AMIGO EN MÉRIDA</p>
+</div>
+
 <div class="container">
-    <span class="section-title">1. Elige tu Tour</span>
+    <span class="section-title">1. Elige tu Experiencia</span>
     <select id="tour-select" class="tour-picker" onchange="calcular()">
-        <option value="cenotes" data-adulto="650" data-nino="450">Tour 4 Cenotes</option>
-        <option value="chichen" data-adulto="1200" data-nino="850">Chichén Itzá Premium</option>
-        <option value="celestun" data-adulto="950" data-nino="700">Celestún Aventura</option>
+        <option value="cenotes" data-adulto="650" data-nino="450">Tour 4 Cenotes (Cerrado, Abierto, Río)</option>
+        <option value="chichen" data-adulto="1200" data-nino="850">Chichén Itzá & Valladolid</option>
+        <option value="celestun" data-adulto="950" data-nino="700">Celestún (Flamencos y Manglar)</option>
     </select>
 
-    <span class="section-title">2. ¿Cuándo nos vemos?</span>
+    <span class="section-title">2. ¿Qué día nos vemos?</span>
     <input type="date" id="fecha" onchange="validarFecha()">
 
-    <span class="section-title">3. Cantidad de Personas</span>
+    <span class="section-title">3. ¿Quiénes viajan?</span>
     
     <div class="counter-group">
-        <span>Adultos</span>
+        <span style="font-weight: bold;">Adultos</span>
         <div class="counter-controls">
             <button class="btn-qty" onclick="cambiarCant('adultos', -1)">-</button>
             <span id="qty-adultos" class="qty-val">1</span>
@@ -66,7 +98,7 @@
     </div>
 
     <div class="counter-group">
-        <span>Niños (-12 años)</span>
+        <span style="font-weight: bold;">Niños (-12 años)</span>
         <div class="counter-controls">
             <button class="btn-qty" onclick="cambiarCant('ninos', -1)">-</button>
             <span id="qty-ninos" class="qty-val">0</span>
@@ -75,12 +107,20 @@
     </div>
 
     <div class="summary-box">
-        <span style="font-size: 14px; opacity: 0.9;">Inversión Total:</span>
+        <span style="font-size: 14px; opacity: 0.9;">Inversión Total Estimada:</span>
         <span class="total-price" id="total-display">$650 MXN</span>
+        <div style="font-size: 11px; margin-top: 5px;">¡Visita un paraíso cada día!</div>
     </div>
 
-    <div id="error-msg" class="warning">⚠️ Por favor selecciona una fecha válida</div>
-    <a href="javascript:void(0)" onclick="intentarEnviar()" class="btn-whatsapp">Reservar ahora</a>
+    <div id="error-msg" class="warning">⚠️ Por favor, selecciona la fecha de tu tour</div>
+    
+    <a href="javascript:void(0)" onclick="intentarEnviar()" class="btn-whatsapp">
+        Reservar por WhatsApp
+    </a>
+
+    <div class="footer-info">
+        📍 Mérida, Yucatán | 📞 5560040025 | 📧 rjnequiz@hotmail.com
+    </div>
 </div>
 
 <script>
@@ -129,15 +169,18 @@
         }
 
         const telefono = "525560040025";
-        let mensaje = `¡Hola! Quiero reservar con Un Amigo en Mérida:\n\n`;
-        mensaje += `🌴 Tour: ${tourName}\n`;
-        mensaje += `📅 Fecha: ${fecha}\n`;
-        mensaje += `👥 Adultos: ${cantAdultos}\n`;
-        mensaje += `👶 Niños: ${cantNinos}\n`;
-        mensaje += `💰 Total estimado: ${total}`;
+        let mensaje = `¡Hola! Me gustaría reservar con *Un Amigo en Mérida*:\n\n`;
+        mensaje += `🌴 *Tour:* ${tourName}\n`;
+        mensaje += `📅 *Fecha:* ${fecha}\n`;
+        mensaje += `👥 *Adultos:* ${cantAdultos}\n`;
+        mensaje += `👶 *Niños:* ${cantNinos}\n`;
+        mensaje += `💰 *Total cotizado:* ${total}\n\n`;
+        mensaje += `¿Me podrían confirmar disponibilidad?`;
 
         window.open(`https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`, '_blank');
     }
+
+    calcular(); // Inicializar total
 </script>
 
 </body>

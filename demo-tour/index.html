@@ -235,32 +235,55 @@
 </div>
 
 <script>
-    // Variables de estado
     let adultos = 1;
     let ninos = 0;
+    let fechaSeleccionada = "";
+
+    // CONFIGURACIÓN DE SHEETDB
+    // Reemplaza 'TU_API_ID' con el ID que te dio SheetDB
+    const API_URL = 'https://sheetdb.io/api/v1/TU_API_ID?sheet=bloqueos';
+
+    // Inicializar Calendario
+    const fp = flatpickr("#fecha-reserva", {
+        locale: "es",
+        minDate: "today",
+        dateFormat: "d/m/Y",
+        disable: [], // Se llenará con la API
+        onChange: function(selectedDates, dateStr) {
+            fechaSeleccionada = dateStr;
+        }
+    });
+
+   // Cargar bloqueos desde Google Sheets (vía SheetDB)
+fetch(API_URL)
+    .then(response => response.json())
+    .then(data => {
+        // Limpiamos y extraemos las fechas de la columna 'fecha'
+        const bloqueos = data.map(row => row.fecha.trim()); 
+        
+        // Actualizamos el calendario con las nuevas fechas inhabilitadas
+        fp.set("disable", bloqueos);
+        
+        console.log("Fechas bloqueadas activas:", bloqueos);
+    })
+    .catch(error => {
+        console.error("Error al conectar con la disponibilidad:", error);
+    });
 
     function cambiarCant(tipo, cambio) {
         if (tipo === 'adultos') {
-            // Validación: Mínimo 1 adulto
-            if (adultos + cambio >= 1) {
-                adultos += cambio;
-                document.getElementById('qty-adultos').innerText = adultos;
-            }
+            if (adultos + cambio >= 1) adultos += cambio;
+            document.getElementById('qty-adultos').innerText = adultos;
         } else {
-            // Validación: Mínimo 0 niños
-            if (ninos + cambio >= 0) {
-                ninos += cambio;
-                document.getElementById('qty-ninos').innerText = ninos;
-            }
+            if (ninos + cambio >= 0) ninos += cambio;
+            document.getElementById('qty-ninos').innerText = ninos;
         }
         calcular();
     }
 
     function actualizarInterfaz() {
         const selectedTour = document.getElementById('tour-select').value;
-        document.querySelectorAll('.tour-info-card').forEach(card => {
-            card.classList.remove('active');
-        });
+        document.querySelectorAll('.tour-info-card').forEach(card => card.classList.remove('active'));
         document.getElementById('info-' + selectedTour).classList.add('active');
         calcular();
     }
@@ -268,42 +291,30 @@
     function calcular() {
         const select = document.getElementById('tour-select');
         const option = select.options[select.selectedIndex];
-        
-        const precioAdulto = parseInt(option.getAttribute('data-adulto'));
-        const precioNino = parseInt(option.getAttribute('data-nino'));
-        
-        const total = (adultos * precioAdulto) + (ninos * precioNino);
+        const total = (adultos * parseInt(option.getAttribute('data-adulto'))) + (ninos * parseInt(option.getAttribute('data-nino')));
         document.getElementById('total-display').innerText = `$${total.toLocaleString()} MXN`;
     }
 
     function enviarWhatsApp() {
-        const fecha = document.getElementById('fecha').value;
-        
-        // Validación de fecha
-        if (!fecha) {
-            alert("Por favor, selecciona la fecha de tu recorrido.");
-            document.getElementById('fecha').focus();
+        if (!fechaSeleccionada) {
+            alert("Por favor, selecciona una fecha disponible.");
             return;
         }
-
         const select = document.getElementById('tour-select');
         const tourName = select.options[select.selectedIndex].text;
         const total = document.getElementById('total-display').innerText;
-        const telefono = "525560040025"; 
-
+        
         let mensaje = `¡Hola! Me interesa reservar un tour con *Un Amigo en Mérida*:\n\n`;
         mensaje += `🌴 *Tour:* ${tourName}\n`;
-        mensaje += `📅 *Fecha:* ${fecha}\n`;
+        mensaje += `📅 *Fecha:* ${fechaSeleccionada}\n`;
         mensaje += `👥 *Adultos:* ${adultos}\n`;
         mensaje += `👶 *Niños:* ${ninos}\n`;
         mensaje += `💰 *Total estimado:* ${total}\n\n`;
         mensaje += `¿Tienen disponibilidad?`;
 
-        const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
-        window.open(url, '_blank');
+        window.open(`https://wa.me/525560040025?text=${encodeURIComponent(mensaje)}`, '_blank');
     }
 
-    // Inicializar cálculo
     window.onload = calcular;
 </script>
 

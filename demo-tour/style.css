@@ -54,19 +54,29 @@ body {
     font-weight: bold;
 }
 
-/* ELEMENTOS DE FORMULARIO: Selects e Inputs */
-.tour-picker, #fecha-reserva, .flatpickr-input {
-    width: 100%;
-    padding: 15px;
-    font-size: 18px;
-    font-weight: bold;
-    border: 2px solid var(--turquesa);
-    border-radius: 12px;
-    background: var(--light-bg);
-    color: var(--turquesa-dark);
-    cursor: pointer;
-    margin-bottom: 20px;
-    box-sizing: border-box; /* Evita que el padding ensanche el input */
+/* Agrupamos ambos selectores para que compartan la misma armonía */
+.tour-picker, #fecha-reserva, 
+.flatpickr-input {
+    width: 100% !important;
+    padding: 15px !important;
+    font-size: 18px !important;
+    font-family: 'Urbanist', sans-serif !important;
+    font-weight: bold !important;
+    border: 2px solid var(--turquesa) !important;
+    border-radius: 12px !important;
+    background-color: var(--light-bg) !important;
+    color: var(--turquesa-dark) !important;
+    box-sizing: border-box !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+}
+
+/* También agrupamos el estado de enfoque (focus) */
+#fecha-reserva:focus, 
+.flatpickr-input:focus {
+    border-color: var(--turquesa-dark) !important;
+    background-color: #ffffff !important;
+    outline: none !important;
 }
 
 /* TARJETAS DE INFO */

@@ -56,7 +56,6 @@
             font-weight: bold;
         }
 
-        /* Selector de Tour */
         .tour-picker {
             width: 100%;
             padding: 15px;
@@ -75,22 +74,59 @@
             padding: 20px;
             border-radius: 12px;
             font-size: 14px;
-            display: none; /* Se muestra vía JS */
+            display: none;
             border: 1px solid #e0f2f2;
         }
 
         .tour-info-card.active { display: block; }
 
-        .grid-form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; font-size: 13px; font-weight: bold; color: #666; }
         
-        input {
+        input[type="date"] {
             width: 100%; padding: 12px;
             border: 1px solid #ddd;
             border-radius: 8px;
             box-sizing: border-box;
+            font-family: inherit;
         }
+
+        /* Estilos para los selectores de cantidad */
+        .counter-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--light-bg);
+            padding: 10px 20px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #e0f2f2;
+        }
+        
+        .counter-label { font-weight: bold; font-size: 15px; }
+        
+        .counter-controls { display: flex; align-items: center; gap: 15px; }
+        
+        .btn-qty {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: none;
+            background-color: var(--turquesa);
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+        
+        .btn-qty:hover { background-color: var(--turquesa-dark); }
+        .btn-qty:active { transform: scale(0.95); }
+        
+        .qty-val { font-size: 18px; font-weight: bold; min-width: 20px; text-align: center; }
 
         .summary-box {
             background-color: var(--turquesa);
@@ -115,7 +151,10 @@
             font-size: 18px;
             margin-top: 20px;
             box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            transition: 0.3s;
         }
+
+        .btn-whatsapp:hover { background-color: #1ebd5e; }
 
         .footer-info {
             text-align: center;
@@ -134,7 +173,6 @@
 </div>
 
 <div class="container">
-    
     <label>¿Qué paraíso quieres visitar hoy?</label>
     <select id="tour-select" class="tour-picker" onchange="actualizarInterfaz()">
         <option value="cenotes" data-adulto="650" data-nino="450">Tour 4 Cenotes (Bici/Tren)</option>
@@ -158,19 +196,27 @@
     </div>
 
     <h3 class="section-title">Cotiza tu grupo</h3>
+    
     <div class="form-group">
         <label>Fecha del Recorrido</label>
         <input type="date" id="fecha" onchange="calcular()">
     </div>
 
-    <div class="grid-form">
-        <div class="form-group">
-            <label>Adultos</label>
-            <input type="number" id="adultos" value="1" min="1" onchange="calcular()">
+    <div class="counter-container">
+        <span class="counter-label">Adultos</span>
+        <div class="counter-controls">
+            <button class="btn-qty" onclick="cambiarCant('adultos', -1)">-</button>
+            <span id="qty-adultos" class="qty-val">1</span>
+            <button class="btn-qty" onclick="cambiarCant('adultos', 1)">+</button>
         </div>
-        <div class="form-group">
-            <label>Niños (-12 años)</label>
-            <input type="number" id="ninos" value="0" min="0" onchange="calcular()">
+    </div>
+
+    <div class="counter-container">
+        <span class="counter-label">Niños (-12 años)</span>
+        <div class="counter-controls">
+            <button class="btn-qty" onclick="cambiarCant('ninos', -1)">-</button>
+            <span id="qty-ninos" class="qty-val">0</span>
+            <button class="btn-qty" onclick="cambiarCant('ninos', 1)">+</button>
         </div>
     </div>
 
@@ -179,7 +225,7 @@
         <div class="total-price" id="total-display">$0 MXN</div>
     </div>
 
-    <a href="#" id="wa-link" class="btn-whatsapp">
+    <a href="javascript:void(0)" id="wa-link" onclick="enviarWhatsApp()" class="btn-whatsapp">
         Reservar por WhatsApp
     </a>
 
@@ -189,17 +235,33 @@
 </div>
 
 <script>
+    // Variables de estado
+    let adultos = 1;
+    let ninos = 0;
+
+    function cambiarCant(tipo, cambio) {
+        if (tipo === 'adultos') {
+            // Validación: Mínimo 1 adulto
+            if (adultos + cambio >= 1) {
+                adultos += cambio;
+                document.getElementById('qty-adultos').innerText = adultos;
+            }
+        } else {
+            // Validación: Mínimo 0 niños
+            if (ninos + cambio >= 0) {
+                ninos += cambio;
+                document.getElementById('qty-ninos').innerText = ninos;
+            }
+        }
+        calcular();
+    }
+
     function actualizarInterfaz() {
         const selectedTour = document.getElementById('tour-select').value;
-        
-        // Ocultar todas las tarjetas de info
         document.querySelectorAll('.tour-info-card').forEach(card => {
             card.classList.remove('active');
         });
-        
-        // Mostrar la correspondiente
         document.getElementById('info-' + selectedTour).classList.add('active');
-        
         calcular();
     }
 
@@ -210,27 +272,39 @@
         const precioAdulto = parseInt(option.getAttribute('data-adulto'));
         const precioNino = parseInt(option.getAttribute('data-nino'));
         
-        const adultos = document.getElementById('adultos').value;
-        const ninos = document.getElementById('ninos').value;
-        const fecha = document.getElementById('fecha').value;
-        
         const total = (adultos * precioAdulto) + (ninos * precioNino);
         document.getElementById('total-display').innerText = `$${total.toLocaleString()} MXN`;
-
-        const telefono = "525560040025"; 
-        let mensaje = `¡Hola! Me interesa reservar un tour con *Un Amigo en Mérida*:\n\n`;
-        mensaje += `🌴 *Tour:* ${option.text}\n`;
-        mensaje += `📅 *Fecha:* ${fecha || 'Por confirmar'}\n`;
-        mensaje += `👥 *Adultos:* ${adultos}\n`;
-        mensaje += `👶 *Niños:* ${ninos}\n`;
-        mensaje += `💰 *Total estimado:* $${total.toLocaleString()} MXN\n\n`;
-        mensaje += `¿Tienen disponibilidad?`;
-
-        document.getElementById('wa-link').href = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
     }
 
-    // Iniciar con cálculo por defecto
-    calcular();
+    function enviarWhatsApp() {
+        const fecha = document.getElementById('fecha').value;
+        
+        // Validación de fecha
+        if (!fecha) {
+            alert("Por favor, selecciona la fecha de tu recorrido.");
+            document.getElementById('fecha').focus();
+            return;
+        }
+
+        const select = document.getElementById('tour-select');
+        const tourName = select.options[select.selectedIndex].text;
+        const total = document.getElementById('total-display').innerText;
+        const telefono = "525560040025"; 
+
+        let mensaje = `¡Hola! Me interesa reservar un tour con *Un Amigo en Mérida*:\n\n`;
+        mensaje += `🌴 *Tour:* ${tourName}\n`;
+        mensaje += `📅 *Fecha:* ${fecha}\n`;
+        mensaje += `👥 *Adultos:* ${adultos}\n`;
+        mensaje += `👶 *Niños:* ${ninos}\n`;
+        mensaje += `💰 *Total estimado:* ${total}\n\n`;
+        mensaje += `¿Tienen disponibilidad?`;
+
+        const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
+        window.open(url, '_blank');
+    }
+
+    // Inicializar cálculo
+    window.onload = calcular;
 </script>
 
 </body>

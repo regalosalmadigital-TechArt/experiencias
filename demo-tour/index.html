@@ -4,212 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Un Amigo en Mérida | Reservas Online</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
-
-    <style>
-        :root {
-            --turquesa: #00C2CB;
-            --turquesa-dark: #008B94;
-            --white: #ffffff;
-            --text: #333333;
-            --light-bg: #f0fafa;
-        }
-
-        body {
-            font-family: 'Urbanist', sans-serif;
-            margin: 0; padding: 0;
-            background-color: #f4f7f6;
-            color: var(--text);
-            line-height: 1.5;
-        }
-
-        .hero {
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?auto=format&fit=crop&w=1200&q=80');
-            background-size: cover; background-position: center;
-            height: 30vh; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; color: white; text-align: center;
-        }
-
-        .hero h1 { font-size: 32px; margin: 0; text-transform: uppercase; letter-spacing: 3px; }
-
-        .container {
-            max-width: 650px; margin: -30px auto 50px;
-            background: var(--white); padding: 30px; border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        }
-
-        .section-title {
-            color: var(--turquesa-dark); font-size: 16px; border-left: 4px solid var(--turquesa);
-            padding-left: 10px; margin: 25px 0 15px 0; text-transform: uppercase; font-weight: bold;
-        }
-
-        .tour-picker {
-            width: 100%; padding: 15px; font-size: 18px; font-weight: bold;
-            border: 2px solid var(--turquesa); border-radius: 12px;
-            background: var(--light-bg); color: var(--turquesa-dark);
-            cursor: pointer; margin-bottom: 20px;
-        }
-
-        /* ARMONIZACIÓN PARA PC Y MÓVIL (INPUT DE FECHA) */
-        .flatpickr-input, 
-        #fecha-reserva {
-            width: 100% !important;
-            padding: 15px !important;
-            font-size: 18px !important;
-            font-family: 'Urbanist', sans-serif !important;
-            font-weight: bold !important;
-            border: 2px solid var(--turquesa) !important;
-            border-radius: 12px !important;
-            background-color: var(--light-bg) !important;
-            color: var(--turquesa-dark) !important;
-            box-sizing: border-box !important;
-            cursor: pointer !important;
-            transition: all 0.3s ease !important;
-            outline: none !important;
-        }
-
-        .flatpickr-input:hover, 
-        .flatpickr-input:focus,
-        #fecha-reserva:hover {
-            border-color: var(--turquesa-dark) !important;
-            background-color: #ffffff !important;
-        }
-
-        /* ESTILOS ESPECÍFICOS PARA EL CALENDARIO (VERSION PC) */
-        @media (min-width: 768px) {
-            .flatpickr-calendar {
-                box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
-                border: 1px solid var(--light-bg) !important;
-                border-radius: 15px !important;
-            }
-            .flatpickr-day.selected {
-                background: var(--turquesa) !important;
-                border-color: var(--turquesa) !important;
-            }
-        }
-
-        /* Estilo para días bloqueados */
-        .flatpickr-day.flatpickr-disabled {
-            color: #ccc !important;
-            text-decoration: line-through !important;
-            cursor: not-allowed !important;
-        }
-
-        .tour-info-card {
-            background: var(--light-bg); padding: 20px; border-radius: 12px;
-            font-size: 14px; display: none; border: 1px solid #e0f2f2;
-        }
-
-        .tour-info-card.active { display: block; }
-
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-size: 13px; font-weight: bold; color: #666; }
-
-        .counter-container {
-            display: flex; align-items: center; justify-content: space-between;
-            background: var(--light-bg); padding: 10px 20px; border-radius: 12px;
-            margin-bottom: 10px; border: 1px solid #e0f2f2;
-        }
-        
-        .counter-controls { display: flex; align-items: center; gap: 15px; }
-        
-        .btn-qty {
-            width: 35px; height: 35px; border-radius: 50%; border: none;
-            background-color: var(--turquesa); color: white;
-            font-size: 20px; font-weight: bold; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-        }
-
-        .summary-box {
-            background-color: var(--turquesa); color: white; padding: 20px;
-            border-radius: 15px; text-align: center; margin-top: 25px;
-        }
-
-        .total-price { font-size: 36px; font-weight: bold; }
-
-        .btn-whatsapp {
-            display: block; background-color: #25D366; color: white;
-            text-align: center; padding: 18px; border-radius: 12px;
-            text-decoration: none; font-weight: bold; font-size: 18px;
-            margin-top: 20px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-        }
-
-        .footer-info {
-            text-align: center; font-size: 12px; color: #999;
-            margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px;
-        }
-    </style>
+    
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="hero">
-    <h1>UN AMIGO EN MÉRIDA</h1>
-</div>
-
-<div class="container">
-    <label>¿Qué paraíso quieres visitar hoy?</label>
-    <select id="tour-select" class="tour-picker" onchange="actualizarInterfaz()">
-        <option value="cenotes" data-adulto="650" data-nino="450">Tour 4 Cenotes (Bici/Tren)</option>
-        <option value="chichen" data-adulto="1200" data-nino="850">Chichén Itzá & Valladolid</option>
-        <option value="celestun" data-adulto="950" data-nino="700">Celestún (Flamencos & Manglares)</option>
-    </select>
-
-    <div id="info-cenotes" class="tour-info-card active">
-        <h3 class="section-title">Detalles del Tour Cenotes</h3>
-        <p>Visita 4 cenotes: Cerrado, Semiabierto, Abierto y tipo Río. Incluye bicicletas, chalecos y regaderas.</p>
+    <div class="hero">
+        <h1>UN AMIGO EN MÉRIDA</h1>
     </div>
 
-    <div id="info-chichen" class="tour-info-card">
-        <h3 class="section-title">Maravilla del Mundo</h3>
-        <p>Recorrido guiado, tiempo libre en Valladolid y visita a un cenote abierto.</p>
-    </div>
+    <div class="container">
+        <label>¿Qué paraíso quieres visitar hoy?</label>
+        <select id="tour-select" class="tour-picker" onchange="actualizarInterfaz()">
+            <option value="cenotes" data-adulto="650" data-nino="450">Tour 4 Cenotes (Bici/Tren)</option>
+            <option value="chichen" data-adulto="1200" data-nino="850">Chichén Itzá & Valladolid</option>
+            <option value="celestun" data-adulto="950" data-nino="700">Celestún (Flamencos & Manglares)</option>
+        </select>
 
-    <div id="info-celestun" class="tour-info-card">
-        <h3 class="section-title">Naturaleza Viva</h3>
-        <p>Paseo en lancha para observar flamencos, túneles de manglar y tiempo de playa.</p>
-    </div>
+        <div id="info-cenotes" class="tour-info-card active">
+            <h3 class="section-title">Detalles del Tour Cenotes</h3>
+            <p>Visita 4 cenotes: Cerrado, Semiabierto, Abierto y tipo Río. Incluye bicicletas, chalecos y regaderas.</p>
+        </div>
 
-    <h3 class="section-title">Cotiza tu grupo</h3>
-    <div class="form-group">
-        <label>Fecha del Recorrido</label>
-        <input type="text" id="fecha-reserva" placeholder="Selecciona una fecha...">
-    </div>
+        <div id="info-chichen" class="tour-info-card">
+            <h3 class="section-title">Maravilla del Mundo</h3>
+            <p>Recorrido guiado, tiempo libre en Valladolid y visita a un cenote abierto para nadar. Incluye buffet.</p>
+        </div>
 
-    <div class="counter-container">
-        <span class="counter-label">Adultos</span>
-        <div class="counter-controls">
-            <button class="btn-qty" onclick="cambiarCant('adultos', -1)">-</button>
-            <span id="qty-adultos" class="qty-val">1</span>
-            <button class="btn-qty" onclick="cambiarCant('adultos', 1)">+</button>
+        <div id="info-celestun" class="tour-info-card">
+            <h3 class="section-title">Naturaleza Viva</h3>
+            <p>Paseo en lancha para ver flamencos rosas, túneles de manglar y tiempo de playa.</p>
+        </div>
+
+        <h3 class="section-title">Cotiza tu grupo</h3>
+        
+        <div class="form-group">
+            <label>Fecha del Recorrido</label>
+            <input type="text" id="fecha-reserva" placeholder="Selecciona una fecha...">
+        </div>
+
+        <div class="counter-container">
+            <span class="counter-label">Adultos</span>
+            <div class="counter-controls">
+                <button class="btn-qty" onclick="cambiarCant('adultos', -1)">-</button>
+                <span id="qty-adultos" class="qty-val">1</span>
+                <button class="btn-qty" onclick="cambiarCant('adultos', 1)">+</button>
+            </div>
+        </div>
+
+        <div class="counter-container">
+            <span class="counter-label">Niños (-12 años)</span>
+            <div class="counter-controls">
+                <button class="btn-qty" onclick="cambiarCant('ninos', -1)">-</button>
+                <span id="qty-ninos" class="qty-val">0</span>
+                <button class="btn-qty" onclick="cambiarCant('ninos', 1)">+</button>
+            </div>
+        </div>
+
+        <div class="summary-box">
+            <div style="font-size: 14px; opacity: 0.9;">Total Estimado:</div>
+            <div class="total-price" id="total-display">$0 MXN</div>
+        </div>
+
+        <a href="javascript:void(0)" id="wa-link" onclick="enviarWhatsApp()" class="btn-whatsapp">
+            Reservar por WhatsApp
+        </a>
+
+        <div class="footer-info">
+            📍 Mérida, Yucatán | 📞 5560040025 | 📧 rjnequiz@hotmail.com
         </div>
     </div>
 
-    <div class="counter-container">
-        <span class="counter-label">Niños (-12 años)</span>
-        <div class="counter-controls">
-            <button class="btn-qty" onclick="cambiarCant('ninos', -1)">-</button>
-            <span id="qty-ninos" class="qty-val">0</span>
-            <button class="btn-qty" onclick="cambiarCant('ninos', 1)">+</button>
-        </div>
-    </div>
-
-    <div class="summary-box">
-        <div style="font-size: 14px; opacity: 0.9;">Total Estimado:</div>
-        <div class="total-price" id="total-display">$0 MXN</div>
-    </div>
-
-    <a href="javascript:void(0)" id="wa-link" onclick="enviarWhatsApp()" class="btn-whatsapp">Reservar por WhatsApp</a>
-
-    <div class="footer-info">
-        📍 Mérida, Yucatán | 📞 5560040025 | 📧 rjnequiz@hotmail.com
-    </div>
-</div>
-
-<script src="script.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>

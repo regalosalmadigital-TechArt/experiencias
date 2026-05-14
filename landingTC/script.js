@@ -32,4 +32,57 @@ document.addEventListener('DOMContentLoaded', () => {
             navLinks.classList.remove('active');
         });
     });
+
+    // 3. Lógica del Formulario de Captación (Landing Page)
+    const form = document.getElementById('lead-form'); 
+    
+    // Verificamos que el formulario exista en la página para evitar errores
+    if (form) {
+        const submitBtn = form.querySelector('button[type="submit"]');
+
+        form.addEventListener('submit', (e) => {
+            // Previene que la página se recargue al enviar el formulario
+            e.preventDefault();
+            
+            // Cambiar el estado del botón a "Enviando..."
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
+            submitBtn.style.opacity = '0.7';
+
+            // ==========================================
+            // INTEGRACIÓN CON WEBHOOK (Ej. n8n)
+            // Aquí puedes enviar los datos directamente a tu flujo de automatización
+            // ==========================================
+            /*
+            fetch('TU_URL_DE_WEBHOOK_AQUI', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    nombre: document.getElementById('nombre').value,
+                    empresa: document.getElementById('empresa').value,
+                    correo: document.getElementById('correo').value,
+                    telefono: document.getElementById('telefono').value
+                })
+            })
+            .then(response => {
+                // Lógica si el webhook responde correctamente
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            */
+
+            // Simulación de envío exitoso (Puedes borrar este bloque setTimeout cuando actives el fetch de arriba)
+            setTimeout(() => {
+                alert('¡Gracias! Hemos recibido tus datos. Un consultor estratégico se comunicará contigo hoy mismo.');
+                form.reset(); // Limpia los campos del formulario
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText; // Regresa el botón a su texto original
+                submitBtn.style.opacity = '1';
+            }, 2000);
+        });
+    }
 });

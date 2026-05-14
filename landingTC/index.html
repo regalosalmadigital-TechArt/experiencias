@@ -44,16 +44,55 @@
     <!-- ==========================================
          SECCIÓN 1 (Continuación): HERO (Cabecera Principal)
          ========================================== -->
-    <header id="hero">
-        <!-- Capa oscura semitransparente para que el texto resalte sobre la imagen de fondo -->
+    <!-- ==========================================
+         SECCIÓN 1: HERO LANDING (Enfocado a Conversión)
+         ========================================== -->
+    <header id="hero" class="hero-landing">
         <div class="overlay"></div>
-        <div class="container hero-content">
-            <h1>De reclutamiento transaccional a ingeniería de capital humano</h1>
-            <p>Diseñamos infraestructuras de talento proactivas para garantizar la continuidad operativa de su empresa en el Bajío.</p>
-            <a href="#contacto" class="btn btn-primary">Solicitar diagnóstico</a>
+        <div class="container hero-container">
+            <!-- Columna Izquierda: Propuesta de valor -->
+            <div class="hero-text">
+                <h1>De reclutamiento transaccional a ingeniería de capital humano</h1>
+                <p>Diseñamos infraestructuras de talento proactivas para garantizar la continuidad operativa de su empresa en el Bajío.</p>
+                <!-- Opcional: viñetas rápidas de valor que ayudan a la conversión -->
+                <ul class="hero-benefits">
+                    <li><i class="fa-solid fa-check text-yellow"></i> Cobertura rápida de vacantes</li>
+                    <li><i class="fa-solid fa-check text-yellow"></i> Reducción drástica de rotación</li>
+                    <li><i class="fa-solid fa-check text-yellow"></i> Candidatos altamente perfilados</li>
+                </ul>
+            </div>
+            
+            <!-- Columna Derecha: Formulario de Captación -->
+            <div class="hero-form-box">
+                <h3>Solicita tu diagnóstico sin costo</h3>
+                <p>Déjanos tus datos y un consultor estratégico se comunicará contigo hoy mismo.</p>
+                
+                <form id="lead-form" action="#" method="POST">
+                    <div class="form-group">
+                        <input type="text" id="nombre" name="nombre" placeholder="Nombre completo" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="empresa" name="empresa" placeholder="Empresa" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="correo" name="correo" placeholder="Correo corporativo" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="telefono" name="telefono" placeholder="Teléfono / WhatsApp" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Agendar Diagnóstico</button>
+                </form>
+            </div>
         </div>
     </header>
 
+    <!-- ==========================================
+         BOTÓN FLOTANTE DE WHATSAPP
+         (Colócalo al final, justo antes de cerrar </body>)
+         ========================================== -->
+    <a href="https://wa.me/524427965332?text=Hola,%20me%20interesa%20profesionalizar%20mi%20proceso%20de%20contratación." class="whatsapp-float" target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
     <!-- ==========================================
          SECCIÓN 2: SÍNTOMAS (Puntos de dolor)
          ========================================== -->

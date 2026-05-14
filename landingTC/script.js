@@ -5,17 +5,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const navbar = document.getElementById('navbar');
     
     window.addEventListener('scroll', () => {
-        // Si bajamos más de 50px, le damos fondo completamente sólido al navbar
         if (window.scrollY > 50) {
-            navbar.style.backgroundColor = '#111111';
+            // Un negro un poco más oscuro pero que sigue siendo transparente
+            navbar.style.backgroundColor = 'rgba(0, 0, 0, 0.85)'; 
             navbar.style.boxShadow = '0 2px 10px rgba(0,0,0,0.5)';
         } else {
-            // Si estamos hasta arriba, lo hacemos un poco transparente
-            navbar.style.backgroundColor = 'rgba(17, 17, 17, 0.95)';
+            // Vuelve a ser más transparente cuando estás hasta arriba
+            navbar.style.backgroundColor = 'rgba(0, 0, 0, 0.4)';
             navbar.style.boxShadow = 'none';
         }
     });
-
+    
     // 2. Funcionalidad del Menú Móvil (Botón Hamburguesa)
     const menuToggle = document.getElementById('mobile-menu');
     const navLinks = document.querySelector('.nav-links');

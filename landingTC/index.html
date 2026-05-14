@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talentum Consultoría</title>
+    
+    <!-- Fuentes de Google: Playfair Display para títulos (elegante) y Roboto para textos (limpia) -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- Librería FontAwesome para cargar los íconos de los servicios y síntomas -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Enlace a tu archivo CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ==========================================
+         SECCIÓN 1: NAVEGACIÓN (Navbar)
+         ========================================== -->
+    <nav id="navbar">
+        <div class="container nav-container">
+            <!-- Logo de la empresa. Usamos un texto temporal, aquí iría tu <img> con el logo real -->
+            <div class="logo">
+                <span class="logo-icon"><i class="fa-solid fa-network-wired"></i></span>
+                Talentum Consultoría
+            </div>
+            
+            <!-- Enlaces de navegación -->
+            <ul class="nav-links">
+                <li><a href="#nosotros">Nosotros</a></li>
+                <li><a href="#servicios">Nuestros Servicios</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+            
+            <!-- Botón de menú hamburguesa para versión móvil -->
+            <div class="menu-toggle" id="mobile-menu">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==========================================
+         SECCIÓN 1 (Continuación): HERO (Cabecera Principal)
+         ========================================== -->
+    <header id="hero">
+        <!-- Capa oscura semitransparente para que el texto resalte sobre la imagen de fondo -->
+        <div class="overlay"></div>
+        <div class="container hero-content">
+            <h1>De reclutamiento transaccional a ingeniería de capital humano</h1>
+            <p>Diseñamos infraestructuras de talento proactivas para garantizar la continuidad operativa de su empresa en el Bajío.</p>
+            <a href="#contacto" class="btn btn-primary">Solicitar diagnóstico</a>
+        </div>
+    </header>
+
+    <!-- ==========================================
+         SECCIÓN 2: SÍNTOMAS (Puntos de dolor)
+         ========================================== -->
+    <section id="sintomas">
+        <div class="container">
+            <h2 class="section-title text-light">¿Tu empresa tiene estos síntomas?</h2>
+            
+            <!-- Contenedor Grid para las 4 tarjetas -->
+            <div class="sintomas-grid">
+                <div class="sintoma-card">
+                    <i class="fa-solid fa-circle-exclamation text-yellow"></i>
+                    <p>Contrata "cuando urge" en vez de planificar estratégicamente</p>
+                </div>
+                <div class="sintoma-card">
+                    <i class="fa-solid fa-circle-exclamation text-yellow"></i>
+                    <p>Entrevista sin estructura ni criterios objetivos de selección</p>
+                </div>
+                <div class="sintoma-card">
+                    <i class="fa-solid fa-circle-exclamation text-yellow"></i>
+                    <p>No tiene proceso de integración formal para nuevos colaboradores</p>
+                </div>
+                <div class="sintoma-card">
+                    <i class="fa-solid fa-circle-exclamation text-yellow"></i>
+                    <!-- Espacio para el cuarto síntoma según el diseño original -->
+                    <p>Alta rotación de personal en puestos clave o de recién ingreso</p>
+                </div>
+            </div>
+            
+            <p class="sintomas-footer text-yellow">No tienes un problema de personal. Tienes un problema de sistema — y eso se corrige estratégicamente.</p>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SECCIÓN 3: NOSOTROS (Tu aliado)
+         ========================================== -->
+    <section id="nosotros">
+        <div class="container nosotros-container">
+            <!-- Columna Izquierda: Imagen y marco decorativo -->
+            <div class="nosotros-imagen">
+                <!-- Imagen genérica de retrato corporativo -->
+                <img src="https://picsum.photos/500/600?random=1" alt="Consultora Talentum">
+            </div>
+            
+            <!-- Columna Derecha: Textos -->
+            <div class="nosotros-texto">
+                <h2>Tu aliado en contrataciones</h2>
+                <p>En Talentum Consultoría entendemos que cada contratación es una inversión. Por eso trabajamos de la mano con empresas del Bajío para construir equipos sólidos que impulsen resultados reales.</p>
+                <p>Con experiencia en el sector industrial y de manufactura, conocemos los retos de la región y ofrecemos soluciones de RH adaptadas a tu ritmo operativo.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SECCIÓN 4: SERVICIOS
+         ========================================== -->
+    <section id="servicios">
+        <div class="container">
+            <h2 class="section-title dark-text">Nuestros Servicios</h2>
+            
+            <!-- Contenedor Grid para los 3 servicios -->
+            <div class="servicios-grid">
+                <!-- Servicio 1 -->
+                <div class="servicio-card">
+                    <i class="fa-solid fa-user-check fa-2x text-yellow"></i>
+                    <h3>Reclutamiento y Selección de Alta precisión</h3>
+                    <p>Usamos nuestra tecnología para interceptar candidatos 24/7 y realizar un filtrado de alta fidelidad.</p>
+                </div>
+                <!-- Servicio 2 -->
+                <div class="servicio-card">
+                    <i class="fa-solid fa-gears fa-2x text-yellow"></i>
+                    <h3>Consultoría para Optimización y Estabilización Operativa</h3>
+                    <p>Diagnóstico profundo de procesos, factores de rechazo y atractividad de marca detectados durante la etapa de reclutamiento.</p>
+                </div>
+                <!-- Servicio 3 -->
+                <div class="servicio-card">
+                    <i class="fa-solid fa-clipboard-check fa-2x text-yellow"></i>
+                    <h3>Blindaje de Permanencia Total</h3>
+                    <p>Onboarding asistido y monitoreo crítico en momentos de alta deserción para asegurar la inversión.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SECCIÓN 5: CONTACTO Y FOOTER
+         ========================================== -->
+    <section id="contacto" class="cta-section">
+        <div class="overlay dark-overlay"></div>
+        <div class="container cta-content">
+            <h2>¿Listo para profesionalizar tu proceso de contratación?</h2>
+            <p>Agenda un diagnóstico sin costo y descubre cómo podemos transformar la gestión de talento en tu empresa.</p>
+            <!-- Botón con ícono de teléfono y el número -->
+            <a href="tel:4427965332" class="btn btn-primary"><i class="fa-solid fa-phone"></i> 442 796 53 32</a>
+        </div>
+    </section>
+
+    <!-- Pie de página final -->
+    <footer>
+        <div class="container footer-content">
+            <p>© 2026 Talentum Consultoría. Todos los derechos reservados.</p>
+            <p>Querétaro, México — Región del Bajío</p>
+        </div>
+    </footer>
+
+    <!-- Enlace a tu archivo JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

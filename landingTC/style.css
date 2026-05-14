@@ -70,13 +70,16 @@ html {
     position: fixed;
     top: 0;
     width: 100%;
-    background-color: rgba(17, 17, 17, 0.95); /* Fondo oscuro semitransparente */
+    /* Negro transparente (el último número es la opacidad, 0.4 = 40%) */
+    background-color: rgba(0, 0, 0, 0.4); 
+    /* Efecto de desenfoque para que parezca cristal (opcional pero recomendado) */
+    backdrop-filter: blur(8px); 
+    -webkit-backdrop-filter: blur(8px);
     z-index: 1000;
     padding: 15px 0;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Borde sutil y transparente */
     transition: all 0.3s ease;
 }
-
 .nav-container {
     display: flex;
     justify-content: space-between;

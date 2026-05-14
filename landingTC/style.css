@@ -486,21 +486,45 @@ footer {
 /* ==========================================
    MEDIA QUERIES (Responsividad para Móviles)
    ========================================== */
-@media (max-width: 768px) {
-    /* Ajustes del Navbar para móvil */
-    .menu-toggle { display: block; }
-    
-    .nav-links {
-        position: absolute;
-        top: 60px;
-        left: -100%; /* Oculto por defecto */
-        flex-direction: column;
-        background-color: var(--dark-bg);
-        width: 100%;
-        text-align: center;
-        padding: 20px 0;
-        transition: 0.3s;
-    }
+@media (max-width: 900px) {
+            /* Reducir espacios en blanco gigantes */
+            #hero { padding: 100px 0 40px; min-height: auto; }
+            #sintomas, #nosotros, #servicios, .footer-cta { padding: 50px 0; }
+            
+            /* Apilar elementos en una sola columna */
+            .hero-grid, .nosotros-grid { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+            
+            /* Ajustar tamaños de fuente para lectura cómoda */
+            .hero-text h1 { font-size: 2.2rem; }
+            .section-title { font-size: 1.8rem; margin-bottom: 30px; }
+            .nosotros-content h2 { font-size: 2rem; }
+            
+            /* Ajustar el formulario */
+            .form-box { padding: 25px; width: 100%; margin: 0 auto; }
+            
+            /* Centrar lista de beneficios */
+            .hero-benefits { display: inline-block; text-align: left; margin: 0 auto; }
+            
+            /* Evitar que la imagen rompa el ancho de la pantalla con la sombra */
+            .nosotros-img { box-shadow: none; margin-bottom: 10px; }
+            
+            /* MENÚ MÓVIL (Hamburguesa) */
+            .menu-toggle { display: block; cursor: pointer; }
+            .nav-links { 
+                display: flex;
+                flex-direction: column; 
+                position: absolute; 
+                top: 60px; /* Justo debajo del navbar */
+                left: -100%; /* Oculto fuera de la pantalla por defecto */
+                width: 100%; 
+                background: rgba(0, 0, 0, 0.95); 
+                text-align: center; 
+                padding: 20px 0; 
+                transition: left 0.3s ease-in-out;
+            }
+            .nav-links.active { left: 0; /* Aparece cuando tiene la clase active */ }
+            .nav-links li { margin: 15px 0; }
+        }
     
     .nav-links.active {
         left: 0; /* Aparece cuando se activa mediante JS */

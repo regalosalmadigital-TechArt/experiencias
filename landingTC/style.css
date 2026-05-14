@@ -1,0 +1,386 @@
+/* ==========================================
+   VARIABLES GLOBALES Y RESETEO
+   ========================================== */
+:root {
+    /* Paleta de colores extraída de tus imágenes */
+    --primary-yellow: #fdb913; 
+    --dark-bg: #111111;
+    --darker-bg: #0a0a0a;
+    --light-bg: #f9f9f9;
+    --text-light: #ffffff;
+    --text-dark: #333333;
+    --text-gray: #e0e0e0;
+    
+    /* Tipografías */
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Roboto', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-body);
+    color: var(--text-dark);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+html {
+    scroll-behavior: smooth; /* Desplazamiento suave al hacer clic en el menú */
+}
+
+/* Clases de utilidad */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.text-yellow { color: var(--primary-yellow); }
+.text-light { color: var(--text-light); }
+
+/* Botones */
+.btn {
+    display: inline-block;
+    padding: 15px 30px;
+    text-decoration: none;
+    font-weight: 700;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-primary {
+    background-color: var(--primary-yellow);
+    color: var(--dark-bg);
+}
+
+.btn-primary:hover {
+    background-color: #e5a710;
+}
+
+/* ==========================================
+   NAVEGACIÓN (Navbar)
+   ========================================== */
+#navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: rgba(17, 17, 17, 0.95); /* Fondo oscuro semitransparente */
+    z-index: 1000;
+    padding: 15px 0;
+    border-bottom: 1px solid #333;
+    transition: all 0.3s ease;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    color: var(--primary-yellow);
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links a {
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--primary-yellow);
+}
+
+.menu-toggle {
+    display: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* ==========================================
+   HERO SECTION (Cabecera)
+   ========================================== */
+#hero {
+    height: 100vh;
+    background-image: url('https://picsum.photos/1920/1080?random=2'); /* Imagen genérica de fondo */
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin-top: 60px;
+}
+
+.overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Oscurece la imagen para leer el texto */
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    color: var(--text-light);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero-content h1 {
+    font-family: var(--font-heading);
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.hero-content p {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    color: var(--text-gray);
+}
+
+/* ==========================================
+   SECCIÓN: SÍNTOMAS
+   ========================================== */
+#sintomas {
+    background: linear-gradient(135deg, var(--darker-bg) 0%, #2a2000 100%);
+    padding: 80px 0;
+    text-align: center;
+}
+
+.section-title {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    margin-bottom: 40px;
+    position: relative;
+    display: inline-block;
+}
+
+/* Línea amarilla decorativa debajo de los títulos */
+.section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background-color: var(--primary-yellow);
+    margin: 15px auto 0;
+}
+
+.sintomas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.sintoma-card {
+    background-color: #1c1c1c;
+    border-left: 4px solid var(--primary-yellow);
+    padding: 25px;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    text-align: left;
+    color: var(--text-gray);
+    border-radius: 4px;
+}
+
+.sintomas-footer {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+/* ==========================================
+   SECCIÓN: NOSOTROS
+   ========================================== */
+#nosotros {
+    padding: 100px 0;
+    background-color: var(--text-light);
+}
+
+.nosotros-container {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+
+.nosotros-imagen {
+    flex: 1;
+    position: relative;
+}
+
+.nosotros-imagen img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: -20px 20px 0 var(--primary-yellow); /* Crea el efecto del marco amarillo */
+}
+
+.nosotros-texto {
+    flex: 1;
+}
+
+.nosotros-texto h2 {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.nosotros-texto p {
+    margin-bottom: 20px;
+    color: #555;
+    font-size: 1.05rem;
+}
+
+/* ==========================================
+   SECCIÓN: SERVICIOS
+   ========================================== */
+#servicios {
+    padding: 80px 0;
+    background-color: var(--light-bg);
+    text-align: center;
+}
+
+.servicios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.servicio-card {
+    background: #fff;
+    padding: 40px 30px;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    transition: transform 0.3s;
+    text-align: left;
+}
+
+.servicio-card:hover {
+    transform: translateY(-10px); /* Efecto de elevación al pasar el mouse */
+}
+
+.servicio-card i {
+    margin-bottom: 20px;
+}
+
+.servicio-card h3 {
+    font-family: var(--font-heading);
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.servicio-card p {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+/* ==========================================
+   SECCIÓN: CONTACTO (CTA) Y FOOTER
+   ========================================== */
+.cta-section {
+    position: relative;
+    padding: 100px 0;
+    background-image: url('https://picsum.photos/1920/1080?random=3');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Efecto Parallax sutil */
+    text-align: center;
+    color: var(--text-light);
+}
+
+.dark-overlay {
+    background: rgba(10, 10, 10, 0.85); /* Overlay más oscuro para el footer */
+}
+
+.cta-content {
+    position: relative;
+    z-index: 2;
+}
+
+.cta-content h2 {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.cta-content p {
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+}
+
+footer {
+    background-color: var(--darker-bg);
+    color: #888;
+    padding: 30px 0;
+    font-size: 0.9rem;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* ==========================================
+   MEDIA QUERIES (Responsividad para Móviles)
+   ========================================== */
+@media (max-width: 768px) {
+    /* Ajustes del Navbar para móvil */
+    .menu-toggle { display: block; }
+    
+    .nav-links {
+        position: absolute;
+        top: 60px;
+        left: -100%; /* Oculto por defecto */
+        flex-direction: column;
+        background-color: var(--dark-bg);
+        width: 100%;
+        text-align: center;
+        padding: 20px 0;
+        transition: 0.3s;
+    }
+    
+    .nav-links.active {
+        left: 0; /* Aparece cuando se activa mediante JS */
+    }
+    
+    /* Ajustes de tamaño de texto */
+    .hero-content h1 { font-size: 2.5rem; }
+    
+    /* Ajustes de estructura */
+    .nosotros-container {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .nosotros-imagen img { margin-bottom: 30px; box-shadow: 0 20px 0 var(--primary-yellow); }
+    
+    .footer-content {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+}

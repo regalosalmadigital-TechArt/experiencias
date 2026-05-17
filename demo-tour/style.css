@@ -1,10 +1,11 @@
-/* VARIABLES GLOBALES: Control estético maestro de la interfaz */
+/* VARIABLES GLOBALES */
 :root {
-    --turquesa: #00C2CB;        /* Color principal */
-    --turquesa-dark: #008B94;   /* Hover, títulos y acentos en reportes */
+    --turquesa: #00C2CB;        
+    --turquesa-dark: #008B94;   
     --white: #ffffff;
     --text: #333333;
-    --light-bg: #f0fafa;        /* Fondos de tarjetas */
+    --light-bg: #f0fafa;        
+    --executive-dark: #1F2937; /* Color complementario premium */
 }
 
 /* RESET Y CUERPO */
@@ -18,11 +19,11 @@ body {
 
 /* ENCABEZADO (HERO) */
 .hero {
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
                 url('https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?auto=format&fit=crop&w=1200&q=80');
     background-size: cover;
     background-position: center;
-    height: 30vh;
+    height: 35vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -33,7 +34,21 @@ body {
 
 .hero h1 { font-size: 32px; margin: 0; text-transform: uppercase; letter-spacing: 3px; }
 
-/* CONTENEDOR PRINCIPAL: Estilo tarjeta flotante */
+/* MODIFICACIÓN 2: Badge de Tours Privados */
+.badge-private {
+    background-color: var(--turquesa-dark);
+    color: var(--white);
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* CONTENEDOR PRINCIPAL */
 .container {
     max-width: 650px;
     margin: -30px auto 50px;
@@ -41,9 +56,10 @@ body {
     padding: 30px;
     border-radius: 20px;
     box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    box-sizing: border-box;
 }
 
-/* TÍTULOS DE SECCIÓN: Indicador visual de categoría */
+/* TÍTULOS DE SECCIÓN */
 .section-title {
     color: var(--turquesa-dark);
     font-size: 16px;
@@ -54,7 +70,7 @@ body {
     font-weight: bold;
 }
 
-/* SOLUCIÓN DE VISUALIZACIÓN EN PC (Inputs & Selectores) */
+/* ENTRADAS DE FORMULARIO Y SELECTORES */
 body .flatpickr-input,
 body #fecha-reserva,
 body .tour-picker {
@@ -74,8 +90,6 @@ body .tour-picker {
     transition: all 0.3s ease !important;
     display: block !important;
     padding-right: 40px !important;
-
-    /* Flecha SVG personalizada */
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23008B94' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
     background-repeat: no-repeat !important;
     background-position: right 15px center !important;
@@ -83,17 +97,13 @@ body .tour-picker {
     -moz-appearance: none !important;
 }
 
-/* Forzar estado en modo de lectura */
 body .flatpickr-input[readonly] {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23008B94' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
     cursor: pointer !important;
 }
 
-select::-ms-expand {
-    display: none;
-}
+select::-ms-expand { display: none; }
 
-/* Estados Dinámicos */
 body .flatpickr-input:hover,
 body .flatpickr-input:focus,
 body .tour-picker:hover {
@@ -102,22 +112,64 @@ body .tour-picker:hover {
     outline: none !important;
 }
 
-.flatpickr-mobile {
-    display: none !important;
-}
+.flatpickr-mobile { display: none !important; }
 
-/* TARJETAS DE INFORMACIÓN (Rastreadas mediante evento 'ver_tour') */
+/* MODIFICACIÓN 1: Estilos para las Imágenes en Tarjetas de Tour */
 .tour-info-card {
     background: var(--light-bg);
-    padding: 20px;
-    border-radius: 12px;
+    padding: 0 0 20px 0; /* Modificado para ajustar la imagen al borde */
+    border-radius: 16px;
     font-size: 14px;
     display: none;
     border: 1px solid #e0f2f2;
+    overflow: hidden; /* Evita que la imagen rompa las esquinas redondeadas */
+    margin-top: 15px;
+}
+.tour-info-card p {
+    padding: 0 20px;
+    margin: 10px 0 0 0;
 }
 .tour-info-card.active { display: block; }
 
-/* CONTROLES DE CONTADORES */
+.tour-card-img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover; /* Ajusta la imagen de manera fluida y proporcional */
+    border-bottom: 3px solid var(--turquesa);
+}
+
+/* MODIFICACIÓN 3: Estilos de la Sección de Testimonios */
+.reviews-section {
+    background-color: #fcfdfd;
+    border: 1px dashed var(--turquesa);
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    margin-top: 25px;
+}
+.reviews-text {
+    font-size: 15px;
+    font-weight: bold;
+    margin: 0 0 12px 0;
+    color: var(--executive-dark);
+}
+.btn-reviews {
+    display: inline-block;
+    color: var(--turquesa-dark);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    border: 2px solid var(--turquesa-dark);
+    padding: 8px 18px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+.btn-reviews:hover {
+    background-color: var(--turquesa-dark);
+    color: var(--white);
+}
+
+/* CONTROLES DE CANTIDAD */
 .counter-container {
     display: flex;
     align-items: center;
@@ -138,7 +190,7 @@ body .tour-picker:hover {
 }
 .btn-qty:hover { background-color: var(--turquesa-dark); }
 
-/* CAJA DE PRECIO TOTAL */
+/* RESUMEN DE PRECIO */
 .summary-box {
     background-color: var(--turquesa);
     color: white;
@@ -149,7 +201,7 @@ body .tour-picker:hover {
 }
 .total-price { font-size: 36px; font-weight: bold; }
 
-/* BOTÓN DE CONVERSIÓN FINAL (Envía evento 'click_whatsapp') */
+/* BOTÓN WHATSAPP */
 .btn-whatsapp {
     display: block;
     background-color: #25D366;
@@ -164,12 +216,43 @@ body .tour-picker:hover {
     box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
 }
 
+/* MODIFICACIÓN 4: Realce Estético del Footer y Enlaces de Redes */
 .footer-info {
-    text-align: center; font-size: 12px; color: #999;
-    margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px;
+    text-align: center;
+    margin-top: 40px;
+    border-top: 1px solid #eee;
+    padding-top: 25px;
+}
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+.social-icon-link {
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    transition: transform 0.3s ease;
+}
+.icon-svg {
+    width: 100%;
+    height: 100%;
+    fill: #7F8C8D; /* Gris base elegante */
+    transition: fill 0.3s ease;
+}
+.social-icon-link:hover {
+    transform: translateY(-3px); /* Pequeño salto responsivo */
+}
+.social-icon-link:hover .icon-svg {
+    fill: var(--turquesa-dark); /* Cambio de color dinámico al pasar el cursor */
+}
+.footer-text {
+    font-size: 13px;
+    color: #7F8C8D;
 }
 
-/* Calendario: Estilo de Bloqueos (SheetDB) */
+/* Estilos Calendario Bloqueado */
 .flatpickr-day.flatpickr-disabled, 
 .flatpickr-day.flatpickr-disabled:hover {
     background: #eeeeee !important;

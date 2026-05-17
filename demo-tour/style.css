@@ -1,7 +1,7 @@
-/* VARIABLES GLOBALES: Cambia estos valores para cambiar el diseño de toda la web */
+/* VARIABLES GLOBALES: Control estético maestro de la interfaz */
 :root {
     --turquesa: #00C2CB;        /* Color principal */
-    --turquesa-dark: #008B94;   /* Hover y títulos */
+    --turquesa-dark: #008B94;   /* Hover, títulos y acentos en reportes */
     --white: #ffffff;
     --text: #333333;
     --light-bg: #f0fafa;        /* Fondos de tarjetas */
@@ -33,7 +33,7 @@ body {
 
 .hero h1 { font-size: 32px; margin: 0; text-transform: uppercase; letter-spacing: 3px; }
 
-/* CONTENEDOR PRINCIPAL: La tarjeta blanca */
+/* CONTENEDOR PRINCIPAL: Estilo tarjeta flotante */
 .container {
     max-width: 650px;
     margin: -30px auto 50px;
@@ -43,7 +43,7 @@ body {
     box-shadow: 0 15px 35px rgba(0,0,0,0.1);
 }
 
-/* TÍTULOS DE SECCIÓN: La barrita turquesa a la izquierda */
+/* TÍTULOS DE SECCIÓN: Indicador visual de categoría */
 .section-title {
     color: var(--turquesa-dark);
     font-size: 16px;
@@ -54,8 +54,7 @@ body {
     font-weight: bold;
 }
 
-/* SOLUCIÓN AL PROBLEMA DE PC: Selector de triple peso */
-/* Al poner 'body' antes, le ganamos a los estilos internos de Flatpickr */
+/* SOLUCIÓN DE VISUALIZACIÓN EN PC (Inputs & Selectores) */
 body .flatpickr-input,
 body #fecha-reserva,
 body .tour-picker {
@@ -70,37 +69,31 @@ body .tour-picker {
     color: var(--turquesa-dark) !important;
     box-sizing: border-box !important;
     cursor: pointer !important;
-    appearance: none !important;  /*Quita estilos nativos de Windows/Mac */
+    appearance: none !important;
     -webkit-appearance: none;
     transition: all 0.3s ease !important;
     display: block !important;
-    /* 1. Aseguramos que haya espacio a la derecha para la flecha */
     padding-right: 40px !important;
 
-    /* 2. Agregamos una flecha SVG turquesa */
+    /* Flecha SVG personalizada */
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23008B94' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
     background-repeat: no-repeat !important;
     background-position: right 15px center !important;
     background-size: 18px !important;
-
-    /* 3. Esto es lo que oculta la flecha fea del sistema */
-    appearance: none !important;
-    -webkit-appearance: none !important;
     -moz-appearance: none !important;
 }
 
-/* Forzar que se mantenga la flecha incluso si el input está en modo "readonly" (común en PC) */
+/* Forzar estado en modo de lectura */
 body .flatpickr-input[readonly] {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23008B94' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
     cursor: pointer !important;
 }
 
-/* Ocultar la flecha nativa en Internet Explorer/Edge antiguo */
 select::-ms-expand {
     display: none;
 }
 
-/* Efecto Focus/Hover unificado */
+/* Estados Dinámicos */
 body .flatpickr-input:hover,
 body .flatpickr-input:focus,
 body .tour-picker:hover {
@@ -109,12 +102,11 @@ body .tour-picker:hover {
     outline: none !important;
 }
 
-/* Forzar que el calendario no use el estilo nativo de móvil de Apple/Android */
 .flatpickr-mobile {
     display: none !important;
 }
 
-/* TARJETAS DE INFO */
+/* TARJETAS DE INFORMACIÓN (Rastreadas mediante evento 'ver_tour') */
 .tour-info-card {
     background: var(--light-bg);
     padding: 20px;
@@ -125,7 +117,7 @@ body .tour-picker:hover {
 }
 .tour-info-card.active { display: block; }
 
-/* CONTROLES DE CANTIDAD (ADULTOS/NIÑOS) */
+/* CONTROLES DE CONTADORES */
 .counter-container {
     display: flex;
     align-items: center;
@@ -146,7 +138,7 @@ body .tour-picker:hover {
 }
 .btn-qty:hover { background-color: var(--turquesa-dark); }
 
-/* RESUMEN DE PRECIO */
+/* CAJA DE PRECIO TOTAL */
 .summary-box {
     background-color: var(--turquesa);
     color: white;
@@ -157,7 +149,7 @@ body .tour-picker:hover {
 }
 .total-price { font-size: 36px; font-weight: bold; }
 
-/* BOTÓN WHATSAPP */
+/* BOTÓN DE CONVERSIÓN FINAL (Envía evento 'click_whatsapp') */
 .btn-whatsapp {
     display: block;
     background-color: #25D366;
@@ -177,11 +169,11 @@ body .tour-picker:hover {
     margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px;
 }
 
-/* Estilos para los días BLOQUEADOS en el calendario */
+/* Calendario: Estilo de Bloqueos (SheetDB) */
 .flatpickr-day.flatpickr-disabled, 
 .flatpickr-day.flatpickr-disabled:hover {
     background: #eeeeee !important;
     color: #bbbbbb !important;
     cursor: not-allowed !important;
-    text-decoration: line-through; /* Tachado para que sea obvio que no hay servicio */
+    text-decoration: line-through;
 }

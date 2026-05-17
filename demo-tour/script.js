@@ -39,6 +39,12 @@ async function inicializarSistema() {
             disable: [], // Aquí se cargarán las fechas de Google Sheets
             onChange: function(selectedDates, dateStr) {
                 fechaSeleccionada = dateStr;
+
+                // [ANALÍTICA] Evento: Selección de fecha en el cotizador
+                gtag('event', 'interaccion_cotizador', {
+                    'tipo_accion': 'seleccion_fecha',
+                    'fecha_viaje': dateStr
+                });
             }
         });
         
@@ -77,11 +83,19 @@ function cargarBloqueos() {
 function cambiarCant(tipo, cambio) {
     if (tipo === 'adultos') {
         if (adultos + cambio >= 1) adultos += cambio; // Mínimo 1 adulto
-        document.getElementById('qty-adultos').innerText = adultos;
+        document.getElementById('qty-adultos').innerText = adults;
     } else {
         if (ninos + cambio >= 0) ninos += cambio; // Mínimo 0 niños
         document.getElementById('qty-ninos').innerText = ninos;
     }
+    
+    // [ANALÍTICA] Evento: Cambio en volumen de pasajeros (Uso de cotizador)
+    gtag('event', 'interaccion_cotizador', {
+        'tipo_accion': 'modificar_pasajeros',
+        'categoria': tipo,
+        'valor_actual': tipo === 'adultos' ? adultos : ninos
+    });
+
     calcular(); // Recalcula el precio tras el cambio
 }
 
@@ -89,12 +103,20 @@ function cambiarCant(tipo, cambio) {
  * ACTUALIZAR INTERFAZ: Muestra la info del tour seleccionado
  */
 function actualizarInterfaz() {
-    const selectedTour = document.getElementById('tour-select').value;
+    const select = document.getElementById('tour-select');
+    const selectedTour = select.value;
+    const tourText = select.options[select.selectedIndex].text;
     
     // Oculta todas las tarjetas y muestra solo la seleccionada
     document.querySelectorAll('.tour-info-card').forEach(card => card.classList.remove('active'));
     document.getElementById('info-' + selectedTour).classList.add('active');
     
+    // [ANALÍTICA] Evento: Rastreo de clic y lectura de tours específicos
+    gtag('event', 'ver_tour', {
+        'id_tour': selectedTour,
+        'nombre_tour': tourText
+    });
+
     calcular();
 }
 
@@ -129,6 +151,7 @@ function enviarWhatsApp() {
 
     const select = document.getElementById('tour-select');
     const tourName = select.options[select.selectedIndex].text;
+    const idTour = select.value;
     const total = document.getElementById('total-display').innerText;
     
     // Estructura del mensaje (Usa negritas de WhatsApp con asteriscos)
@@ -139,6 +162,16 @@ function enviarWhatsApp() {
     mensaje += `👶 *Niños:* ${ninos}\n`;
     mensaje += `💰 *Total estimado:* ${total}\n\n`;
     mensaje += `¿Tienen disponibilidad?`;
+
+    // [ANALÍTICA] Evento de Conversión Maestro: Clic Final de Reserva
+    gtag('event', 'click_whatsapp', {
+        'nombre_tour': tourName,
+        'id_tour': idTour,
+        'fecha_reserva': fechaSeleccionada,
+        'total_cotizado': total,
+        'cantidad_adultos': adultos,
+        'cantidad_ninos': ninos
+    });
 
     // Codifica el mensaje para URL y abre WhatsApp
     window.open(`https://wa.me/525560040025?text=${encodeURIComponent(mensaje)}`, '_blank');

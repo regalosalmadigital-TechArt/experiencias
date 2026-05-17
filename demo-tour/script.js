@@ -25,18 +25,13 @@ async function inicializarSistema() {
         // Configuración del Calendario
         fp = flatpickr(campoFecha, {
             locale: "es",
-            minDate: "today", // No permite fechas pasadas
+            minDate: "today", 
             dateFormat: "Y-m-d",
-            altInput: true, // Muestra un formato más legible al usuario
+            altInput: true, 
             altFormat: "d/m/Y",
-
-            // CLAVE PARA PC: Obliga a heredar los estilos del input original
             altInputClass: "flatpickr-input",
-
-            // Evita que el celular use su calendario nativo feo
             disableMobile: true,
-            
-            disable: [], // Aquí se cargarán las fechas de Google Sheets
+            disable: [], 
             onChange: function(selectedDates, dateStr) {
                 fechaSeleccionada = dateStr;
 
@@ -51,6 +46,16 @@ async function inicializarSistema() {
         // Ejecuta el cálculo inicial y busca bloqueos en la nube
         calcular();
         cargarBloqueos();
+        
+        // [ANALÍTICA AGREGADA]: Rastreo del clic de testimonios y opiniones sociales
+        const btnReviews = document.getElementById('btn-reviews');
+        if (btnReviews) {
+            btnReviews.addEventListener('click', function() {
+                gtag('event', 'clic_testimonios', {
+                    'destino_red': 'Instagram_Reviews'
+                });
+            });
+        }
 
     } catch (error) {
         console.error("❌ Error en inicialización:", error.message);
@@ -64,12 +69,10 @@ function cargarBloqueos() {
     fetch(API_URL)
         .then(res => res.json())
         .then(data => {
-            // Filtra los datos para obtener solo las fechas válidas
             const fechas = data
                 .filter(row => row.fecha && row.fecha.trim().length > 5)
                 .map(row => row.fecha.trim());
 
-            // Si hay fechas, las bloquea en el calendario
             if (fp && typeof fp.set === 'function') {
                 fp.set("disable", fechas);
             }
@@ -82,10 +85,10 @@ function cargarBloqueos() {
  */
 function cambiarCant(tipo, cambio) {
     if (tipo === 'adultos') {
-        if (adultos + cambio >= 1) adultos += cambio; // Mínimo 1 adulto
-        document.getElementById('qty-adultos').innerText = adults;
+        if (adultos + cambio >= 1) adultos += cambio; 
+        document.getElementById('qty-adultos').innerText = adultos;
     } else {
-        if (ninos + cambio >= 0) ninos += cambio; // Mínimo 0 niños
+        if (ninos + cambio >= 0) ninos += cambio; 
         document.getElementById('qty-ninos').innerText = ninos;
     }
     
@@ -96,7 +99,7 @@ function cambiarCant(tipo, cambio) {
         'valor_actual': tipo === 'adultos' ? adultos : ninos
     });
 
-    calcular(); // Recalcula el precio tras el cambio
+    calcular(); 
 }
 
 /**
@@ -107,7 +110,6 @@ function actualizarInterfaz() {
     const selectedTour = select.value;
     const tourText = select.options[select.selectedIndex].text;
     
-    // Oculta todas las tarjetas y muestra solo la seleccionada
     document.querySelectorAll('.tour-info-card').forEach(card => card.classList.remove('active'));
     document.getElementById('info-' + selectedTour).classList.add('active');
     
@@ -128,22 +130,17 @@ function calcular() {
     if(!select) return;
 
     const option = select.options[select.selectedIndex];
-    
-    // Obtiene los precios desde los atributos 'data-' del HTML
     const precioAdulto = parseInt(option.getAttribute('data-adulto'));
     const precioNino = parseInt(option.getAttribute('data-nino'));
 
     const total = (adultos * precioAdulto) + (ninos * precioNino);
-    
-    // Formatea el número con comas y lo muestra
     document.getElementById('total-display').innerText = `$${total.toLocaleString()} MXN`;
 }
 
 /**
- * ENVIAR WHATSAPP: Construye el mensaje y abre el enlace
+ * ENVIAR WHATSAPP: Construye el mensaje con el distintivo de privado y abre el enlace
  */
 function enviarWhatsApp() {
-    // Validación de fecha
     if (!fechaSeleccionada) {
         alert("Por favor, selecciona una fecha disponible.");
         return;
@@ -154,8 +151,8 @@ function enviarWhatsApp() {
     const idTour = select.value;
     const total = document.getElementById('total-display').innerText;
     
-    // Estructura del mensaje (Usa negritas de WhatsApp con asteriscos)
-    let mensaje = `¡Hola! Me interesa reservar un tour con *Un Amigo en Mérida*:\n\n`;
+    // Estructura del mensaje incluyendo la aclaración de servicio Privado
+    let mensaje = `¡Hola! Me interesa reservar un tour *PRIVADO* con *Un Amigo en Mérida*:\n\n`;
     mensaje += `🌴 *Tour:* ${tourName}\n`;
     mensaje += `📅 *Fecha:* ${fechaSeleccionada}\n`;
     mensaje += `👥 *Adultos:* ${adultos}\n`;
@@ -170,12 +167,11 @@ function enviarWhatsApp() {
         'fecha_reserva': fechaSeleccionada,
         'total_cotizado': total,
         'cantidad_adultos': adultos,
-        'cantidad_ninos': ninos
+        'cantidad_ninos': ninos,
+        'modalidad': 'privado'
     });
 
-    // Codifica el mensaje para URL y abre WhatsApp
     window.open(`https://wa.me/525560040025?text=${encodeURIComponent(mensaje)}`, '_blank');
 }
 
-// Inicia todo el proceso cuando el contenido está listo
 document.addEventListener("DOMContentLoaded", inicializarSistema);

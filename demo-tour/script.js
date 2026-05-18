@@ -13,7 +13,6 @@ const API_URL = 'https://sheetdb.io/api/v1/2s1p744rscfly?sheet=bloqueos';
  * INICIALIZACIÓN: Se ejecuta al cargar la página
  */
 async function inicializarSistema() {
-    // Espera a que la librería de calendario cargue
     while (typeof flatpickr === 'undefined') {
         await new Promise(resolve => setTimeout(resolve, 100));
     }
@@ -22,7 +21,6 @@ async function inicializarSistema() {
         const campoFecha = document.getElementById('fecha-reserva');
         if (!campoFecha) throw new Error("No se encontró el elemento #fecha-reserva");
 
-        // Configuración del Calendario
         fp = flatpickr(campoFecha, {
             locale: "es",
             minDate: "today", 
@@ -43,11 +41,9 @@ async function inicializarSistema() {
             }
         });
         
-        // Ejecuta el cálculo inicial y busca bloqueos en la nube
         calcular();
         cargarBloqueos();
         
-        // [ANALÍTICA AGREGADA]: Rastreo del clic de testimonios y opiniones sociales
         const btnReviews = document.getElementById('btn-reviews');
         if (btnReviews) {
             btnReviews.addEventListener('click', function() {
@@ -81,6 +77,47 @@ function cargarBloqueos() {
 }
 
 /**
+ * CAMBIAR NACIONALIDAD: Modificación condicional para Extranjeros vs Mexicanos
+ */
+function cambiarNacionalidad() {
+    const nacionalidad = document.getElementById('nacionalidad-select').value;
+    const wrapperEntradas = document.getElementById('wrapper-entradas');
+    const entradasSelect = document.getElementById('entradas-select');
+
+    // Regla de Negocio: Si es extranjero, solo aplica sin entradas y se oculta el selector
+    if (nacionalidad === 'extranjero') {
+        entradasSelect.value = 'sin';
+        wrapperEntradas.style.display = 'none';
+    } else {
+        // Si vuelve a cambiar a mexicano, se muestra la opción de elegir entradas
+        wrapperEntradas.style.display = 'block';
+    }
+
+    // [ANALÍTICA] Evento: Rastreo de cambios de procedencia del usuario
+    gtag('event', 'interaccion_cotizador', {
+        'tipo_accion': 'cambio_nacionalidad',
+        'perfil_usuario': nacionalidad
+    });
+
+    calcular();
+}
+
+/**
+ * CAMBIAR ENTRADAS: Rastrea las interacciones de selección de entradas
+ */
+function cambiarEntradas() {
+    const modalidadEntradas = document.getElementById('entradas-select').value;
+
+    // [ANALÍTICA] Evento: Elección de paquete con o sin accesos
+    gtag('event', 'interaccion_cotizador', {
+        'tipo_accion': 'seleccion_entradas',
+        'modalidad': modalidadEntradas
+    });
+
+    calcular();
+}
+
+/**
  * CAMBIAR CANTIDAD: Controla los botones + y - de adultos/niños
  */
 function cambiarCant(tipo, cambio) {
@@ -92,7 +129,6 @@ function cambiarCant(tipo, cambio) {
         document.getElementById('qty-ninos').innerText = ninos;
     }
     
-    // [ANALÍTICA] Evento: Cambio en volumen de pasajeros (Uso de cotizador)
     gtag('event', 'interaccion_cotizador', {
         'tipo_accion': 'modificar_pasajeros',
         'categoria': tipo,
@@ -113,7 +149,6 @@ function actualizarInterfaz() {
     document.querySelectorAll('.tour-info-card').forEach(card => card.classList.remove('active'));
     document.getElementById('info-' + selectedTour).classList.add('active');
     
-    // [ANALÍTICA] Evento: Rastreo de clic y lectura de tours específicos
     gtag('event', 'ver_tour', {
         'id_tour': selectedTour,
         'nombre_tour': tourText
@@ -123,24 +158,43 @@ function actualizarInterfaz() {
 }
 
 /**
- * CALCULAR: Realiza la suma de precios
+ * CALCULAR: Modificado para aplicar condicionales de nacionalidad y accesos
  */
 function calcular() {
     const select = document.getElementById('tour-select');
     if(!select) return;
 
     const option = select.options[select.selectedIndex];
-    const precioAdulto = parseInt(option.getAttribute('data-adulto'));
-    const precioNino = parseInt(option.getAttribute('data-nino'));
+    const nacionalidad = document.getElementById('nacionalidad-select').value;
+    const modalidadEntradas = document.getElementById('entradas-select').value;
+
+    // Obtención de precios base (Sin entradas)
+    let precioAdulto = parseInt(option.getAttribute('data-adulto'));
+    let precioNino = parseInt(option.getAttribute('data-nino'));
+
+    // Suma de adicionales si es Mexicano y elige la opción "Con entradas"
+    if (nacionalidad === 'mexicano' && modalidadEntradas === 'con') {
+        precioAdulto += parseInt(option.getAttribute('data-entrada-adulto')) || 0;
+        precioNino += parseInt(option.getAttribute('data-entrada-nino')) || 0;
+    }
 
     const total = (adultos * precioAdulto) + (ninos * precioNino);
     document.getElementById('total-display').innerText = `$${total.toLocaleString()} MXN`;
 }
 
 /**
- * ENVIAR WHATSAPP: Construye el mensaje con el distintivo de privado y abre el enlace
+ * ENVIAR WHATSAPP: Modificado para recopilar el nombre, perfil y enviar la estructura de reserva limpia
  */
 function enviarWhatsApp() {
+    const nombre = document.getElementById('nombre-cliente').value.trim();
+    
+    // Validación obligatoria de Nombre antes de abrir flujo
+    if (!nombre) {
+        alert("Por favor, ingresa tu nombre completo para personalizar tu cotización.");
+        document.getElementById('nombre-cliente').focus();
+        return;
+    }
+
     if (!fechaSeleccionada) {
         alert("Por favor, selecciona una fecha disponible.");
         return;
@@ -150,25 +204,35 @@ function enviarWhatsApp() {
     const tourName = select.options[select.selectedIndex].text;
     const idTour = select.value;
     const total = document.getElementById('total-display').innerText;
+    const nacionalidad = document.getElementById('nacionalidad-select').value;
+    const modalidadEntradas = document.getElementById('entradas-select').value;
+
+    // Formatear texto estético para el envío del mensaje de WhatsApp
+    let perfilTexto = nacionalidad === 'mexicano' ? '🇲🇽 Mexicano / Nacional' : '✈️ Extranjero / International';
+    let entradasTexto = nacionalidad === 'extranjero' ? 'Sin entradas (Tarifa Extranjero)' : (modalidadEntradas === 'con' ? 'Con entradas incluidas' : 'Sin entradas');
     
-    // Estructura del mensaje incluyendo la aclaración de servicio Privado
     let mensaje = `¡Hola! Me interesa reservar un tour *PRIVADO* con *Un Amigo en Mérida*:\n\n`;
+    mensaje += `👤 *Nombre:* ${nombre}\n`;
+    mensaje += `🌍 *Perfil:* ${perfilTexto}\n`;
+    mensaje += `🎟️ *Accesos:* ${entradasTexto}\n`;
     mensaje += `🌴 *Tour:* ${tourName}\n`;
     mensaje += `📅 *Fecha:* ${fechaSeleccionada}\n`;
     mensaje += `👥 *Adultos:* ${adultos}\n`;
     mensaje += `👶 *Niños:* ${ninos}\n`;
     mensaje += `💰 *Total estimado:* ${total}\n\n`;
-    mensaje += `¿Tienen disponibilidad?`;
+    mensaje += `¿Tienen disponibilidad para estas condiciones?`;
 
-    // [ANALÍTICA] Evento de Conversión Maestro: Clic Final de Reserva
+    // [ANALÍTICA MÁSTER]: Envío enriquecido con variables cualitativas de conversión
     gtag('event', 'click_whatsapp', {
+        'nombre_viajero': nombre,
         'nombre_tour': tourName,
         'id_tour': idTour,
         'fecha_reserva': fechaSeleccionada,
         'total_cotizado': total,
         'cantidad_adultos': adultos,
         'cantidad_ninos': ninos,
-        'modalidad': 'privado'
+        'perfil_nacionalidad': nacionalidad,
+        'modalidad_entradas': modalidadEntradas
     });
 
     window.open(`https://wa.me/525560040025?text=${encodeURIComponent(mensaje)}`, '_blank');

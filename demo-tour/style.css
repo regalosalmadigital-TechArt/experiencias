@@ -5,7 +5,7 @@
     --white: #ffffff;
     --text: #333333;
     --light-bg: #f0fafa;        
-    --executive-dark: #1F2937; /* Color complementario premium */
+    --executive-dark: #1F2937; 
 }
 
 /* RESET Y CUERPO */
@@ -34,7 +34,6 @@ body {
 
 .hero h1 { font-size: 32px; margin: 0; text-transform: uppercase; letter-spacing: 3px; }
 
-/* MODIFICACIÓN 2: Badge de Tours Privados */
 .badge-private {
     background-color: var(--turquesa-dark);
     color: var(--white);
@@ -70,10 +69,11 @@ body {
     font-weight: bold;
 }
 
-/* ENTRADAS DE FORMULARIO Y SELECTORES */
+/* ENTRADAS DE FORMULARIO, INPUT DE NOMBRE Y SELECTORES */
 body .flatpickr-input,
 body #fecha-reserva,
-body .tour-picker {
+body .tour-picker,
+body #nombre-cliente { /* AGREGADO: Vinculación estética del input de nombre */
     width: 100% !important;
     padding: 15px !important;
     font-size: 18px !important;
@@ -84,16 +84,21 @@ body .tour-picker {
     background-color: var(--light-bg) !important;
     color: var(--turquesa-dark) !important;
     box-sizing: border-box !important;
-    cursor: pointer !important;
-    appearance: none !important;
-    -webkit-appearance: none;
     transition: all 0.3s ease !important;
     display: block !important;
+}
+
+/* Ajustes complementarios exclusivos para inputs de selección y flechas de control */
+body .flatpickr-input,
+body #fecha-reserva,
+body .tour-picker {
     padding-right: 40px !important;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23008B94' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
     background-repeat: no-repeat !important;
     background-position: right 15px center !important;
     background-size: 18px !important;
+    appearance: none !important;
+    -webkit-appearance: none;
     -moz-appearance: none !important;
 }
 
@@ -104,25 +109,41 @@ body .flatpickr-input[readonly] {
 
 select::-ms-expand { display: none; }
 
+/* Estados dinámicos unificados en hover y focus */
 body .flatpickr-input:hover,
 body .flatpickr-input:focus,
-body .tour-picker:hover {
+body .tour-picker:hover,
+body .tour-picker:focus,
+body #nombre-cliente:hover,
+body #nombre-cliente:focus {
     border-color: var(--turquesa-dark) !important;
     background-color: #ffffff !important;
     outline: none !important;
 }
 
+/* Estructuración modular de etiquetas de formulario */
+.form-group {
+    margin-bottom: 20px;
+}
+.input-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: var(--executive-dark);
+    font-size: 14px;
+}
+
 .flatpickr-mobile { display: none !important; }
 
-/* MODIFICACIÓN 1: Estilos para las Imágenes en Tarjetas de Tour */
+/* TARJETAS DE INFO */
 .tour-info-card {
     background: var(--light-bg);
-    padding: 0 0 20px 0; /* Modificado para ajustar la imagen al borde */
+    padding: 0 0 20px 0; 
     border-radius: 16px;
     font-size: 14px;
     display: none;
     border: 1px solid #e0f2f2;
-    overflow: hidden; /* Evita que la imagen rompa las esquinas redondeadas */
+    overflow: hidden; 
     margin-top: 15px;
 }
 .tour-info-card p {
@@ -134,11 +155,11 @@ body .tour-picker:hover {
 .tour-card-img {
     width: 100%;
     height: 220px;
-    object-fit: cover; /* Ajusta la imagen de manera fluida y proporcional */
+    object-fit: cover; 
     border-bottom: 3px solid var(--turquesa);
 }
 
-/* MODIFICACIÓN 3: Estilos de la Sección de Testimonios */
+/* SECCIÓN DE TESTIMONIOS */
 .reviews-section {
     background-color: #fcfdfd;
     border: 1px dashed var(--turquesa);
@@ -216,7 +237,7 @@ body .tour-picker:hover {
     box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
 }
 
-/* MODIFICACIÓN 4: Realce Estético del Footer y Enlaces de Redes */
+/* FOOTER */
 .footer-info {
     text-align: center;
     margin-top: 40px;
@@ -238,21 +259,20 @@ body .tour-picker:hover {
 .icon-svg {
     width: 100%;
     height: 100%;
-    fill: #7F8C8D; /* Gris base elegante */
+    fill: #7F8C8D; 
     transition: fill 0.3s ease;
 }
 .social-icon-link:hover {
-    transform: translateY(-3px); /* Pequeño salto responsivo */
+    transform: translateY(-3px); 
 }
 .social-icon-link:hover .icon-svg {
-    fill: var(--turquesa-dark); /* Cambio de color dinámico al pasar el cursor */
+    fill: var(--turquesa-dark); 
 }
 .footer-text {
     font-size: 13px;
     color: #7F8C8D;
 }
 
-/* Estilos Calendario Bloqueado */
 .flatpickr-day.flatpickr-disabled, 
 .flatpickr-day.flatpickr-disabled:hover {
     background: #eeeeee !important;
